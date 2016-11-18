@@ -5,11 +5,11 @@ import matplotlib.cm as cm
 from matplotlib.widgets import Slider
 
 #Enter directory and name of measurement
-directory = 'G:\Projects\Fluxonium & qubits\Data\\2016_01\\12'
-measurement = 'S21_Phase_ZNB_0dBm&n40dB_YOKO_n11p4ton11p9'
-path_data = directory + '\\' + measurement + '_Phase_diff.csv'
+directory = 'D:\Data\Fluxonium #10'
+measurement = 'One tune spectroscopy_YOKO 0mAto50mA_ qubit tone off_Cav_10p30GHz to 10p32GHz_1dBm_pulse_4000_2800_after 2nd thermal cycle'
+path_data = directory + '\\' + measurement + '_Phase.csv'
 path_freq = directory + '\\' + measurement + '_Freq.csv'
-path_vol = directory + '\\' + measurement + '_Voltage.csv'
+path_vol = directory + '\\' + measurement + '_Current.csv'
 
 RawData = np.genfromtxt(path_data, delimiter =',')
 Freq = np.genfromtxt(path_freq, delimiter =',')/1e9

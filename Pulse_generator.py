@@ -30,11 +30,17 @@ c_pulse[cavity_start:cavity_start+cavity_width, 0] = 1
 c_pulse[marker_start:marker_start+marker_width, 1] = 1
 c_pulse[marker_start:marker_start+marker_width, 2] = 1
 
+c_pulse = np.zeros((sample_num, 3))
+c_pulse[:,0] = 1
+c_pulse[0:1000,1] = 1
+c_pulse[0:1000,2] = 1
 directory = 'D:\Data\Pulses'
-path_qu = directory + '\\' + 'Pulse_id20160915_qu.txt'
-path_ca = directory + '\\' + 'Pulse_id20160915_ca.txt'
-np.savetxt(path_qu, q_pulse)
+path_qu = directory + '\\' + 'continuous.txt'
+path_ca = directory + '\\' + 'continuous.txt'
+# np.savetxt(path_qu, q_pulse)
 np.savetxt(path_ca, c_pulse)
 x_axis = np.linspace(0,sample_num,sample_num)
-plt.plot(x_axis, q_pulse, x_axis, c_pulse[:, 0], x_axis, c_pulse[:, 1])
+# plt.plot(x_axis, q_pulse)
+plt.plot(x_axis, c_pulse[:, 0])
+plt.plot(x_axis, c_pulse[:, 1])
 plt.show()
