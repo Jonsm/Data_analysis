@@ -5,7 +5,7 @@ from scipy.optimize import curve_fit
 
 #File path
 directory = 'D:\\Data\\Fluxonium #10_python code by Jon'
-measurement = 'rabi_pulse_8.0647e9_822'
+measurement = 'rabi_pulse_5.7137e9_833'
 path = directory + '\\' + measurement
 
 #Read data
@@ -26,7 +26,7 @@ def func(x, a, b, c, d, g):
 
 guessA= max(phase)-min(phase)
 
-guess = [guessA, 0, 2e5, 0, 0]
+guess = [guessA, 0, 1e6, 0, 0]
 
 popt, pcov = curve_fit(func, time*1e-9, phase, guess)
 

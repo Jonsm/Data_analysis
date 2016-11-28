@@ -5,14 +5,14 @@ from scipy.optimize import curve_fit
 
 #File path
 directory = 'D:\Data\Fluxonium #10_python code by Jon'
-measurement = 't1_pulse_8.0647e9_823'
+measurement = 't1_pulse_6.7812e9_794'
 path = directory + '\\' + measurement
 
 #Read data
-time = np.genfromtxt(path + '_time.csv')
+time = np.genfromtxt(path + '_time5.csv')
 time = time[0::]
 
-data = np.genfromtxt(path + '_phase.csv')
+data = np.genfromtxt(path + '_phase5.csv')
 phase = data[0::] #phase is recorded in rad
 phase = np.unwrap(phase)*180/np.pi
 phase = -phase

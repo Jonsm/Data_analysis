@@ -14,7 +14,7 @@ fig=plt.figure()
 ax = plt.gca()
 ax.get_yaxis().get_major_formatter().set_useOffset(False)
 
-
+'''
 #####################################################################################################################################################################################
 #####################################################################################################################################################################################
 
@@ -129,8 +129,31 @@ for idx in range(len(current)):
     Z[idx,:] = temp - np.average(temp)
 Z = Z*180/(np.pi)
 X,Y = np.meshgrid(current,freq)
-plt.figure(1)
-plt.pcolormesh(X,Y,Z.transpose(), cmap= 'Reds_r', vmin = -5, vmax=0, alpha = 0.3)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu_r', vmin = -5, vmax=0, alpha = 1)
+'''
+################################################################################
+directory = 'D:\Data\Fluxonium #10_New software'
+measurement = 'Two_tone_spec_YOKO_38to40mA_Qubit_3.5to5GHz_10dBm_Cav_10.3045GHz_5dBm_IF_0.05GHz_measTime_500ns_avg_50000'
+path = directory + '\\' + measurement
+
+#Read data
+current = np.genfromtxt(path + '_CURR.dat')#*1e3
+current = current[1:-1]/1e3 + 0.04*1e-3
+freq = np.genfromtxt(path + '_FREQ.dat')
+freq = freq[1::]
+data = np.genfromtxt(path + '_PHASEMAG.dat')
+phase = data[1::,0] #phase is recorded in rad
+mag = data[1::,1]
+Z = np.zeros((len(current),len(freq)))
+# print (phase)
+for idx in range(len(current)):
+    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
+    Z[idx,:] = temp - np.average(temp)
+
+Z = Z*180/(np.pi)
+X,Y = np.meshgrid(current,freq)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'Reds_r', vmin = -5, vmax=0, alpha = 0.2)
+
 #####################################################################################################################################################################################
 #####################################################################################################################################################################################
 
@@ -169,43 +192,44 @@ def trans_energies(N, E_l, E_c, E_j_sum, d, A_j, A_c, B_coeff, beta_squid, beta_
     return trans_energy  
     
 
-######################################################################## 
-# N = 50
-# E_l = 0.746959655208
-# E_c = 0.547943694372
-# E_j_sum = 21.9627179709
-# level_num = 10
-# B_coeff = 60
-# A_j = 3.80888914574e-12
-# A_c = 1.49982268962e-10
-# beta_squid = 0.00378012644185
-# beta_ext = 0.341308382441
-# d=0.0996032153487
-# current = np.linspace(0.04,0.05,1000)
-#
-# iState = 0
-# spectrum = trans_energies(N, E_l, E_c, E_j_sum, d, A_j, A_c, B_coeff, beta_squid, beta_ext, level_num, current, iState)
-# for idx in range(iState,level_num):
-#     line = plt.plot(current, spectrum[idx,:])  # transition from state (iState)
-#     plt.setp(line,linewidth=2.0, linestyle ='-', color = "black", alpha=0.5)
-#     line = plt.plot(current, spectrum[idx,:]+10.304)  # transition from state (iState)
-#     plt.setp(line,linewidth=2.0, linestyle ='--', color = "black", alpha=0.5)
-#     line = plt.plot(current, -spectrum[idx,:]+10.304)  # transition from state (iState)
-#     plt.setp(line,linewidth=2.0, linestyle ='--', color = "black", alpha=0.5)
-#
-# iState = 1
-# spectrum = trans_energies(N, E_l, E_c, E_j_sum, d, A_j, A_c, B_coeff, beta_squid, beta_ext, level_num, current, iState)
-# for idx in range(iState,level_num):
-#     line = plt.plot(current, spectrum[idx-iState,:])  # transition from state (iState)
-#     plt.setp(line,linewidth=2.0, linestyle ='-', color = "red", alpha=0.5)
-#     line = plt.plot(current, spectrum[idx-iState,:]+10.304)  # transition from state (iState)
-#     plt.setp(line,linewidth=2.0, linestyle ='--', color = "red", alpha=0.5)
-#     line = plt.plot(current, -spectrum[idx-iState,:]+10.304)  # transition from state (iState)
-#     plt.setp(line,linewidth=2.0, linestyle ='-.', color = "red", alpha=0.5)
+########################################################################
+# '''
+N = 50
+E_l = 0.746959655208
+E_c = 0.547943694372
+E_j_sum = 21.9627179709
+level_num = 10
+B_coeff = 60
+A_j = 3.80888914574e-12
+A_c = 1.49982268962e-10
+beta_squid = 0.00378012644185
+beta_ext = 0.341308382441
+d=0.0996032153487
+current = np.linspace(0.038,0.04,400)
+
+iState = 0
+spectrum = trans_energies(N, E_l, E_c, E_j_sum, d, A_j, A_c, B_coeff, beta_squid, beta_ext, level_num, current, iState)
+for idx in range(iState,level_num):
+    line = plt.plot(current, spectrum[idx,:])  # transition from state (iState)
+    plt.setp(line,linewidth=2.0, linestyle ='-', color = "black", alpha=0.5)
+    # line = plt.plot(current, spectrum[idx,:]+10.304)  # transition from state (iState)
+    # plt.setp(line,linewidth=2.0, linestyle ='--', color = "black", alpha=0.5)
+    # line = plt.plot(current, -spectrum[idx,:]+10.304)  # transition from state (iState)
+    # plt.setp(line,linewidth=2.0, linestyle ='--', color = "black", alpha=0.5)
+
+iState = 1
+spectrum = trans_energies(N, E_l, E_c, E_j_sum, d, A_j, A_c, B_coeff, beta_squid, beta_ext, level_num, current, iState)
+for idx in range(iState,level_num):
+    line = plt.plot(current, spectrum[idx-iState,:])  # transition from state (iState)
+    plt.setp(line,linewidth=2.0, linestyle ='-', color = "red", alpha=0.5)
+    # line = plt.plot(current, spectrum[idx-iState,:]+10.304)  # transition from state (iState)
+    # plt.setp(line,linewidth=2.0, linestyle ='--', color = "red", alpha=0.5)
+    # line = plt.plot(current, -spectrum[idx-iState,:]+10.304)  # transition from state (iState)
+    # plt.setp(line,linewidth=2.0, linestyle ='-.', color = "red", alpha=0.5)
     
     
 
-
+# '''
 #plt.grid("on")
 plt.xlabel("YOKO I (mA)")
 plt.ylabel("Freq (GHz)")

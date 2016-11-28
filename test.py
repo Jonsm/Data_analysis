@@ -1,43 +1,37 @@
+from matplotlib import pyplot as plt
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider, Button, RadioButtons
+import scipy.optimize as opt
 
-fig, ax = plt.subplots()
-plt.subplots_adjust(left=0.25, bottom=0.25)
-t = np.arange(0.0, 1.0, 0.001)
-a0 = 5
-f0 = 3
-s = a0*np.sin(2*np.pi*f0*t)
-l, = plt.plot(t,s, lw=2, color='red')
-plt.axis([0, 1, -10, 10])
+#File path
+directory = 'D:\Data\Fluxonium #10_New software'
+measurement = 'auto_test_two_tone_result2.txt'
+path = directory + '\\' + measurement
+imported=np.genfromtxt(path)
+ffit=[]
+for i in range(2,3):
+    print i
+    phase = imported[1:,2][201*i:201*(i+1)]
+    freq = imported[1:,1][201*i:201*(i+1)]
+    phase=np.unwrap(phase)
+    measurement = 'Trans_energy_0to1_from_44.04to45.04mA.txt'
+    directory = 'D:\Data\Fluxonium #10_New software\Input_for_auto_meas'
+    path = directory + '\\' + measurement
+    fguess=np.round(np.genfromtxt(path)[40*i+1,1],5)
 
-axcolor = 'lightgoldenrodyellow'
-axfreq = plt.axes([0.25, 0.1, 0.65, 0.03], axisbg=axcolor)
-axamp  = plt.axes([0.25, 0.15, 0.65, 0.03], axisbg=axcolor)
+    def f(x,a,b,c,d):
+        return a+b*1/(1+((x-d)/c)**2)
 
-sfreq = Slider(axfreq, 'Freq', 0.1, 30.0, valinit=f0)
-samp = Slider(axamp, 'Amp', 0.1, 10.0, valinit=a0)
+    guess=[np.mean(phase),-0.1,0.05,fguess]
+    try:
+        func,t=opt.curve_fit(f,freq,phase,guess)
+        a,b,c,d = func
+        ffit.append(d)
+        plt.plot(freq,f(freq,a,b,c,d),'--')
+        plt.plot(freq,phase)
 
-def update(val):
-    amp = samp.val
-    freq = sfreq.val
-    l.set_ydata(amp*np.sin(2*np.pi*freq*t))
-    fig.canvas.draw_idle()
-sfreq.on_changed(update)
-samp.on_changed(update)
+        plt.show()
+    except RuntimeError:
+        print 'fguess used'
 
-resetax = plt.axes([0.8, 0.025, 0.1, 0.04])
-button = Button(resetax, 'Reset', color=axcolor, hovercolor='0.975')
-def reset(event):
-    sfreq.reset()
-    samp.reset()
-button.on_clicked(reset)
-
-rax = plt.axes([0.025, 0.5, 0.15, 0.15], axisbg=axcolor)
-radio = RadioButtons(rax, ('red', 'blue', 'green'), active=0)
-def colorfunc(label):
-    l.set_color(label)
-    fig.canvas.draw_idle()
-radio.on_clicked(colorfunc)
-
+plt.plot(ffit)
 plt.show()
