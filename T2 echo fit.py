@@ -1,49 +1,37 @@
 from matplotlib import pyplot as plt
 import numpy as np
+import h5py
 from scipy.optimize import curve_fit
 
-
-#File path
-directory = 'D:\Data\Fluxonium #10_python code by Jon'
-measurement = 't2_echo_pulse_5.7208e9_770'
-path = directory + '\\' + measurement
-
-#Read data
-time = np.genfromtxt(path + '_time.csv')
-time = time[0::]
-
-data = np.genfromtxt(path + '_phase.csv')
-phase = data[0::] #phase is recorded in rad
-phase = np.unwrap(phase)*180/np.pi
-phase = phase - np.mean(phase)
-
-
-###########################################################
-# Curve fitting
-###########################################################
 def func(x, a, b, c, d):
-    return a * (1 - np.exp(-(x-c)/b)) + d
+    return a*np.exp(-(x-c)/b) + d
 
-guessA= max(phase)-min(phase)
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
+fname = 'T2E_YOKO_28.575mA_Cav7.3649GHz_-15dBm_Qubit0.5046GHz_16dBm_PiPulse1320ns_Count20_TimeStep5000_1000.h5'
+path = directory + '\\' + fname
+time = np.linspace(0,20*5000,20)
 
-guess = [guessA,1e-4, 0, 0]
+#Read data and fit
+with h5py.File(path,'r') as hf:
+    print('List of arrays in this file: \n', hf.keys())
+    count = np.array(hf.get('count'))
+    phase_raw = hf.get('PHASEMAG_Phase0')
+    # print phase_raw
+    phase = phase_raw[0, 0]
+    phase = np.unwrap(phase)*180/np.pi
+    phase = phase - np.min(phase)
+    phase = abs(phase)
 
-popt, pcov = curve_fit(func, time*1e-9, phase, guess)
+# guess = [phase[0]-phase[-1], 2e-4, 0, phase[-1]]
+#
+# popt, pcov = curve_fit(func, time*1e-9, phase, guess)
+#
+# a,b,c,d = popt #b is T1
+# time_nice = np.linspace(0,20*35000, 1000)
+# phase_fit = func(time_nice*1e-9, a, b, c, d)
+# perr = np.sqrt(abs(np.diag(pcov)))
 
-A = popt[0]
-t_decay = popt[1]
-t_delay = popt[2]
-offset = popt[3]
-
-
-print(popt)
-print('T2_echo=' + str(t_decay))
-
-fitphase = (A * (1 - np.exp(-(time*1e-9-t_delay)/t_decay)) + offset)
-
-phase = phase
-
-plt.plot(time, phase, 'o', time, fitphase)
-plt.xlabel('Time(ns)')
-plt.ylabel('Phase')
+plt.plot(time, phase, 'rd')
+# plt.plot(time_nice, phase_fit)
+# plt.title(str( b*1e6)+ r'$\pm$' +str(perr[1]*1e6))
 plt.show()

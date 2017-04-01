@@ -1,64 +1,58 @@
 from matplotlib import pyplot as plt
 import numpy as np
+import h5py
 from scipy.optimize import curve_fit
+from scipy.optimize import OptimizeWarning
+import warnings
+warnings.simplefilter("error", OptimizeWarning)
+warnings.simplefilter("error", RuntimeWarning)
 
+def func(x, a, b, c, d):
+    return a*np.exp(-(x-c)/b) + d
 
-#File path
-directory = 'D:\Data\Fluxonium #10_python code by Jon'
-measurement = 't1_pulse_3.693e9_659'
-flux = 38.69
-qubitfreq = 3.693e9
-path = directory + '\\' + measurement
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T1'
+fname = 'T1_YOKO_28.575mA_Cav7.3649GHz_-15dBm_Qubit0.5046GHz_16dBm_PiPulse1320ns_Count20_TimeStep35000_loop_1000.h5'
+path = directory + '\\' + fname
+T1_array = []
+T1_err_array = []
+time = np.linspace(0,20*35000,20)
 
-T1fits = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-fluxes = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-qubitf = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#Read data and fit
+with h5py.File(path,'r') as hf:
+    print('List of arrays in this file: \n', hf.keys())
+    count = np.array(hf.get('count'))
+    phase_raw = hf.get('PHASEMAG_Phase0')
+    print phase_raw
+    for idx in range(937):
+        phase = phase_raw[idx, 0]
+        phase = np.unwrap(phase)*180/np.pi
+        phase = phase - np.min(phase)
+        phase = abs(phase)
 
-for i in range(0, 10):
-    #Read data
-    time = np.genfromtxt(path + '_time' + str(i) + '.csv')
-    time = time[1::]
+        guess = [phase[0]-phase[-1], 2e-4, 0, phase[-1]]
+        try:
+            popt, pcov = curve_fit(func, time*1e-9, phase, guess)
+        except RuntimeError:
+            print "Doesn't fit well entry " + str(idx)
+            continue
+        except RuntimeWarning:
+            print "Doesn't fit well entry " + str(idx)
+            continue
+        except OptimizeWarning:
+            print "Doesn't fit well entry " + str(idx)
+            continue
 
-    data = np.genfromtxt(path + '_phase' + str(i) + '.csv')
-    phase = data[1::] #phase is recorded in rad
-    phase = np.unwrap(phase)*180/np.pi
-    phase = phase - np.mean(phase)
-    ###########################################################
-    # Curve fitting
-    ###########################################################
-    def func(x, a, b, c, d):
-        return a * (1 - np.exp(-(x-c)/b)) + d
+        a,b,c,d = popt #b is T1
+        time_nice = np.linspace(0,20*35000, 1000)
+        phase_fit = func(time_nice*1e-9, a, b, c, d)
+        perr = np.sqrt(abs(np.diag(pcov)))
+        T1 = b*1e6
+        T1_err = perr[1]*1e6
+        T1_array = np.append(T1_array, T1)
+        T1_err_array = np.append(T1_err_array, T1_err)
+        # print T1
+        # print T1_err
 
-    guessA= max(phase)-min(phase)
-    guess = [guessA, 1e-3, 0, 0]
-
-    popt, pcov = curve_fit(func, time*1e-9, phase, guess)
-
-    A = popt[0]
-    t_decay = popt[1]
-    t_delay = popt[2]
-    offset = popt[3]
-
-
-    print(popt)
-    print('T1=' + str(t_decay))
-    T1fits[i]=t_decay
-    fluxes[i]=flux
-    qubitf[i]=qubitfreq
-
-    fitphase = - (A * (1 - np.exp(-(time*1e-9-t_delay)/t_decay)) + offset)
-
-    phase = - phase
-
-    plt.plot(time, phase, 'o', time, fitphase)
-    plt.xlabel('Time(ns)')
-    plt.ylabel('Phase')
-    plt.show()
-
-AvgT1 = np.average(T1fits)
-# T1fits = np.transpose(T1fits)
-# fluxes = np.transpose(fluxes)
-# qubitf = np.transpose(qubitf)
-print(T1fits)
-print(AvgT1)
-np.savetxt(path + "fit.csv", np.transpose([T1fits, fluxes, qubitf]), delimiter=",", header="T1(s), YOKO(mA), Qubit f(Hz)", comments="" )
+count = np.linspace(0, len(T1_array), len(T1_array))
+plt.errorbar(count, T1_array, yerr=T1_err_array)
+plt.show()

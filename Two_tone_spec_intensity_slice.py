@@ -3,33 +3,38 @@ from matplotlib import pyplot as plt
 from matplotlib.widgets import Slider
 
 #File path
-directory = 'D:\Data\Fluxonium #10_New software'
-measurement = 'One_tone_spec'
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\One_tone_spec'
+measurement = 'One_tone_spec_0to60mA_7.32to7.4GHz_-15dBm'
 path = directory + '\\' + measurement
 
 #Read data
-current = np.genfromtxt(path + '_CURR.dat')
+current = np.genfromtxt(path + '_CURRENT.csv')
 current = current[1:-1]
-freq = np.genfromtxt(path + '_FREQ.dat')
+freq = np.genfromtxt(path + '_FREQ.csv')
 freq = freq[1::]
-data = np.genfromtxt(path + '_PHASEMAG.dat')
-phase = data[1::,0] #phase is recorded in rad
-phase = phase
-mag = data[1::,1]
-# plt.figure(0)
-Z = np.zeros((len(current),len(freq)))
+phasemag = np.genfromtxt(path + '_PHASEMAG.csv')
+phase = phasemag[1::,0] #phase is recorded in rad
+phase = np.unwrap(phase)*180/(np.pi)
+mag = phasemag[1::,1]
+magdB = 10*np.log10(mag)
+Z_mag = np.zeros((len(current), len(freq)))
+Z_phase = np.zeros((len(current), len(freq)))
 for idx in range(len(current)):
     temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
-    Z[idx,:] = temp - np.average(temp)
+    delay = (temp[-1]-temp[0]) / (freq[-1]-freq[0])
+    # temp = temp - freq*delay
+    Z_phase[idx,:] = temp - np.min(temp)
+    # Z_phase[idx,:] = np.diff(temp - np.min(temp))
+    temp = mag[idx*len(freq):(idx+1)*len(freq)]
+    Z_mag[idx,:] = temp - np.min(temp)
 
-Z = Z*180/np.pi #Convert to degrees
+Z=Z_mag
 #Default plot at index 0
-
 fig, ax = plt.subplots()
 plt.subplots_adjust(left=0.25, bottom=0.25)
 l, =plt.plot(freq,Z[0])
 ax.set_xlabel('Freq (GHz)')
-ax.set_ylabel('Phase (deg)')
+# ax.set_ylabel('Phase (deg)')
 
 #Slider defined here
 axcolor = 'lightgoldenrodyellow'
@@ -40,6 +45,7 @@ def update(flux):
     flux = sFlux.val
     # idx = current.tolist().index(flux)
     l.set_ydata(Z[flux])
+    ax.set_title(current[flux])
 
 sFlux.on_changed(update)
 

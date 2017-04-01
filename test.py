@@ -2,36 +2,24 @@ from matplotlib import pyplot as plt
 import numpy as np
 import scipy.optimize as opt
 
+
+
 #File path
-directory = 'D:\Data\Fluxonium #10_New software'
-measurement = 'auto_test_two_tone_result2.txt'
-path = directory + '\\' + measurement
-imported=np.genfromtxt(path)
-ffit=[]
-for i in range(2,3):
-    print i
-    phase = imported[1:,2][201*i:201*(i+1)]
-    freq = imported[1:,1][201*i:201*(i+1)]
-    phase=np.unwrap(phase)
-    measurement = 'Trans_energy_0to1_from_44.04to45.04mA.txt'
-    directory = 'D:\Data\Fluxonium #10_New software\Input_for_auto_meas'
-    path = directory + '\\' + measurement
-    fguess=np.round(np.genfromtxt(path)[40*i+1,1],5)
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\One_tone_spec'
+fname = 'One_tone_spec_28.575to28.575mA_7.55to7.6GHz_-15dBm.csv'
+path = directory + '\\' + fname
+imported = np.genfromtxt(path)[1:, :]
+freq = imported[1::, 0]
+phase = imported[1::, 1]
+mag = imported[1::, 2]
+magdB = 10*np.log10(mag)
+phase = np.unwrap(phase) * 180/np.pi
+phase_delay = (phase[-1]-phase[0])/(freq[-1]-freq[0])
+# phase = phase - freq*phase_delay
+phase = phase-np.mean(phase)
+plt.figure(1)
+plt.plot(freq, mag)
+plt.figure(2)
+plt.plot(freq, phase)
 
-    def f(x,a,b,c,d):
-        return a+b*1/(1+((x-d)/c)**2)
-
-    guess=[np.mean(phase),-0.1,0.05,fguess]
-    try:
-        func,t=opt.curve_fit(f,freq,phase,guess)
-        a,b,c,d = func
-        ffit.append(d)
-        plt.plot(freq,f(freq,a,b,c,d),'--')
-        plt.plot(freq,phase)
-
-        plt.show()
-    except RuntimeError:
-        print 'fguess used'
-
-plt.plot(ffit)
 plt.show()

@@ -3,7 +3,7 @@ import numpy as np
 
 #File path
 directory = 'D:\Data\Fluxonium #10_New software'
-measurement = 'Two_tone_spec_YOKO_44.5to44.5mA_Qubit_3to3.5GHz_10dBm_Cav_10.3039GHz_8dBm_IF_0.05GHz_measTime_500ns_avg_50000'
+measurement = 'Two_tone_spec_YOKO_38.58to38.58mA_Qubit_4.85to4.95GHz_0dBm_Cav_10.3045GHz_5dBm_IF_0.05GHz_measTime_500ns_avg_50000'
 path = directory + '\\' + measurement
 
 #Read data

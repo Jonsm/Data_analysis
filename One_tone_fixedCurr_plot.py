@@ -3,22 +3,20 @@ from matplotlib import pyplot as plt
 
 
 #File path
-directory = 'D:\Data\Fluxonium #10_New software'
-measurement = 'onetone_phase_zoomed.dat'
-path = directory + '\\' + measurement
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\One_tone_spec'
+fname = 'One_tone_spec_28.575to28.575mA_7.34to7.38GHz_-15dBm'
+path = directory + '\\' + fname
 
-data = np.genfromtxt(path)
-data = data[1::,:]
-freq = data[:,0]
-phase = np.unwrap(data[:,1])*180/np.pi
-phase = phase - (phase[-1] - phase[0])/(freq[-1] - freq[0])*freq
-mag = data[:,2]
-mag=20*np.log10(np.sqrt(mag))
+phase = np.genfromtxt(path+"_PHASEMAG.csv")[1:,0]
+mag = np.genfromtxt(path+"_PHASEMAG.csv")[1:,1]
+freq = np.genfromtxt(path+"_FREQ.csv")[1::]
+phase = np.unwrap(phase)*180/np.pi
+offset = (phase[-1] - phase[0])/(freq[-1] - freq[0])*freq
+phase = phase - offset
 
-f, axarr = plt.subplots(2, sharex=True)
-axarr[0].plot(freq, phase)
-axarr[0].set_title('Phase')
-axarr[1].plot(freq,mag)
-axarr[1].set_title('Mag')
 
+plt.figure(1)
+plt.plot(freq, phase)
+plt.figure(2)
+plt.plot(freq, mag)
 plt.show()
