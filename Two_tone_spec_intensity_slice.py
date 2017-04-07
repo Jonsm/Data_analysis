@@ -4,7 +4,7 @@ from matplotlib.widgets import Slider
 
 #File path
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\One_tone_spec'
-measurement = 'One_tone_spec_0to60mA_7.32to7.4GHz_-15dBm'
+measurement = 'One_tone_spec_0to30mA_7.33to7.38GHz_-15dBm'
 path = directory + '\\' + measurement
 
 #Read data

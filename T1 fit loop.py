@@ -23,7 +23,7 @@ with h5py.File(path,'r') as hf:
     count = np.array(hf.get('count'))
     phase_raw = hf.get('PHASEMAG_Phase0')
     print phase_raw
-    for idx in range(937):
+    for idx in range(939):
         phase = phase_raw[idx, 0]
         phase = np.unwrap(phase)*180/np.pi
         phase = phase - np.min(phase)

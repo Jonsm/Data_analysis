@@ -4,9 +4,9 @@ import h5py
 from scipy.optimize import curve_fit
 
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Rabi'
-fname = 'Rabi_YOKO_28.575mA_Cav7.3649GHz_-15dBm_Qubit0.5046GHz_16dBm_Count50_TimeStep100.h5'
+fname = 'Rabi_YOKO_28.583mA_Cav7.3649GHz_-15dBm_Qubit0.5045GHz_25dBm_Count50_TimeStep20.h5'
 path = directory + '\\' + fname
-time = np.linspace(0,50*100,50)
+time = np.linspace(0,50*20,50)
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())

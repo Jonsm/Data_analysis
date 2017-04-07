@@ -17,6 +17,8 @@ ax.get_yaxis().get_major_formatter().set_useOffset(False)
 ##############################################################################################################################
 ###################################################    Data    ###############################################################
 ##############################################################################################################################
+
+'''
 #File path
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
 measurement = 'Two_tone_spec_YOKO_26to27mA_Cav_7.365GHz&-15dBm_QuBit3to4GHz&5dBm'
@@ -94,8 +96,37 @@ for idx in range(len(current)):
 X,Y = np.meshgrid(current,freq)
 plt.figure(1)
 plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = -1.5, vmax = 0.5)
+'''
 
 ##############################################################################################################################
+############################################################Second CD#########################################################
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
+measurement = 'Two_tone_spec_YOKO_30to26mA_Cav_7.3649GHz&-15dBm_QuBit0.5to3.5GHz&20dBm'
+path = directory + '\\' + measurement
+
+#Read data
+current = np.genfromtxt(path + '_CURRENT.csv')#*1e3
+current = current[1:-1]
+freq = np.genfromtxt(path + '_FREQ.csv')
+freq = freq[1::]
+data = np.genfromtxt(path + '_PHASEMAG.csv')
+phase = data[1::,0] #phase is recorded in rad
+mag = data[1::,1]
+Z = np.zeros((len(current),len(freq)))
+# print (phase)
+for idx in range(len(current)):
+    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
+    temp = temp*180/(np.pi)
+    # temp = mag[idx*len(freq):(idx+1)*len(freq)]
+    Z[idx,:] = temp - np.max(temp)
+
+
+X,Y = np.meshgrid(current,freq)
+plt.figure(1)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = -1.5, vmax = 0.5, alpha = 1)
+
+##############################################################################################################################
+#!st CD
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
 measurement = 'Two_tone_spec_YOKO_28.3to28.8mA_Cav_7.365GHz&-15dBm_QuBit0.45to2.5GHz&10dBm'
 path = directory + '\\' + measurement
@@ -117,9 +148,36 @@ for idx in range(len(current)):
     Z[idx,:] = temp - np.max(temp)
 
 
-X,Y = np.meshgrid(current-0.01,freq)
+X,Y = np.meshgrid(current-0.015,freq)
 plt.figure(1)
 plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = -1.5, vmax = 0.5)
+
+#############################################################################################################################
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
+measurement = 'Two_tone_spec_YOKO_28.45to28.65mA_Cav_7.3649GHz&-15dBm_QuBit0.5to1.4GHz&20dBm'
+path = directory + '\\' + measurement
+
+#Read data
+current = np.genfromtxt(path + '_CURRENT.csv')#*1e3
+current = current[1:-1]
+freq = np.genfromtxt(path + '_FREQ.csv')
+freq = freq[1::]
+data = np.genfromtxt(path + '_PHASEMAG.csv')
+phase = data[1::,0] #phase is recorded in rad
+mag = data[1::,1]
+Z = np.zeros((len(current),len(freq)))
+# print (phase)
+for idx in range(len(current)):
+    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
+    temp = temp*180/(np.pi)
+    # temp = mag[idx*len(freq):(idx+1)*len(freq)]
+    Z[idx,:] = temp - np.max(temp)
+
+
+X,Y = np.meshgrid(current,freq)
+plt.figure(1)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = -1.5, vmax = 0.5, alpha = 1)
+
 ##############################################################################################################################
 ###################################################    Theory    #############################################################
 ##############################################################################################################################
@@ -193,6 +251,6 @@ iState = 1
     # plt.setp(line,linewidth=2.0, linestyle ='--', color = "red", alpha=0.5)
     # line = plt.plot(current, -spectrum[idx-iState,:]+10.304)  # transition from state (iState)
     # plt.setp(line,linewidth=2.0, linestyle ='-.', color = "red", alpha=0.5)
-
+plt.grid()
 plt.show()
 

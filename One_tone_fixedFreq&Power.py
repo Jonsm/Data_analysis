@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\One_tone_spec'
-fname = 'One_tone_spec_fixedFreq_0to20_mA_7.363GHz_-13.5dBm'
+fname = 'One_tone_spec_fixedFreq_0to60_mA_7.363GHz_-15dBm'
 path = directory + '\\' + fname
 
 current = np.genfromtxt(path+'_PHASEMAG.csv')[1::,0]

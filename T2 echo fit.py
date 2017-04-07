@@ -7,9 +7,9 @@ def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
-fname = 'T2E_YOKO_28.575mA_Cav7.3649GHz_-15dBm_Qubit0.5046GHz_16dBm_PiPulse1320ns_Count20_TimeStep5000_1000.h5'
+fname = 'T2E_YOKO_28.583mA_Cav7.3649GHz_-15dBm_Qubit0.5045GHz_25dBm_PiPulse450ns_Count50_TimeStep100.h5'
 path = directory + '\\' + fname
-time = np.linspace(0,20*5000,20)
+time = np.linspace(0,50*100,50)
 
 #Read data and fit
 with h5py.File(path,'r') as hf:
