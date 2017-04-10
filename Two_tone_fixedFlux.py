@@ -7,7 +7,8 @@ def lorentzian (x,gamma,x0,h,offset):
 
 #File path
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
-measurement = 'Two_tone_spec_YOKO_28.583to28.583mA_Cav_7.3649GHz&-15dBm_QuBit0.45to0.55GHz&20dBm'
+# directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Three_tone_spec'
+measurement = 'Two_tone_spec_YOKO_28.583to28.583mA_Cav_7.3649GHz&-15dBm_QuBit0.45to0.55GHz&15dBm'
 path = directory + '\\' + measurement
 
 freq = np.genfromtxt(path + '_FREQ.csv')
@@ -21,6 +22,6 @@ plt.plot(freq, phase)
 # print(lorentzian(freq,.5,.5))
 #popt, pcov = scipy.optimize.curve_fit(lorentzian, freq, mag, p0=[.01,.5,.01,.015])
 #plt.plot(freq,lorentzian(freq,*popt))
-plt.figure(2)
-plt.plot(freq, mag)
+# plt.figure(2)
+# plt.plot(freq, mag)
 plt.show()
