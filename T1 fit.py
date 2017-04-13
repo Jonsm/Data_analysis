@@ -7,7 +7,7 @@ def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T1'
-fname = 'T1_YOKO_28.583mA_Cav7.3649GHz_-15dBm_Qubit0.5045GHz_25dBm_PiPulse450ns_Count20_TimeStep35000.h5'
+fname = 'T1_YOKO_28.583mA_Cav7.3649GHz_-15dBm_Qubit0.5043GHz_25dBm_PiPulse950ns_Count20_TimeStep35000.h5'
 path = directory + '\\' + fname
 pts_num = 20
 time_step = 35e3

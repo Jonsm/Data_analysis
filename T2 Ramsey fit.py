@@ -4,10 +4,10 @@ import h5py
 from scipy.optimize import curve_fit
 
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2R'
-fname = 'T2R_YOKO_28.583mA_Cav7.3649GHz_-15dBm_Qubit0.5044GHz_25dBm_PiPulse800ns_Count100_TimeStep1000.h5'
+fname = 'T2R_YOKO_28.583mA_Cav7.3649GHz_-15dBm_Qubit0.5045GHz_25dBm_PiPulse800ns_Count20_TimeStep1500.h5'
 path = directory + '\\' + fname
-pts_num = 100
-time_step = 1000
+pts_num = 20
+time_step = 1500
 time = np.linspace(0, pts_num*time_step, pts_num)
 
 #Read data and fit
@@ -28,7 +28,7 @@ plt.plot(time, phase, '-o')
 def func(x, a, b, c, d, g):
     return a*np.exp(-x/b)*np.cos(2*np.pi*c*((x-g))) + d
 
-guess = [np.max(phase) - np.min(phase), 50e-6, 0.1e6, 0, 0]
+guess = [np.max(phase) - np.min(phase), 20e-6, 0.1e6, 0, 0]
 
 popt, pcov = curve_fit(func, time*1e-9, phase, guess)
 

@@ -3,12 +3,12 @@ from matplotlib import pyplot as plt
 from matplotlib.widgets import Slider
 
 #File path
-directory = 'D:\Data\Fluxonium #10_7.5GHzCav\One_tone_spec'
-measurement = 'One_tone_spec_0to30mA_7.33to7.38GHz_-15dBm'
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
+measurement = 'Two_tone_spec_POWER_-20to0mA_Cav_7.3649GHz&-15dBm_QuBit7.8to7.9GHz'
 path = directory + '\\' + measurement
 
 #Read data
-current = np.genfromtxt(path + '_CURRENT.csv')
+current = np.genfromtxt(path + '_POWER.csv')
 current = current[1:-1]
 freq = np.genfromtxt(path + '_FREQ.csv')
 freq = freq[1::]
@@ -28,7 +28,7 @@ for idx in range(len(current)):
     temp = mag[idx*len(freq):(idx+1)*len(freq)]
     Z_mag[idx,:] = temp - np.min(temp)
 
-Z=Z_mag
+Z=Z_phase
 #Default plot at index 0
 fig, ax = plt.subplots()
 plt.subplots_adjust(left=0.25, bottom=0.25)
