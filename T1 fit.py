@@ -7,7 +7,7 @@ def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T1'
-fname = 'T1_YOKO_28.583mA_Cav7.3649GHz_-15dBm_Qubit0.5043GHz_25dBm_PiPulse950ns_Count20_TimeStep35000.h5'
+fname = 'T1_YOKO_28.53mA_Cav7.3649GHz_-15dBm_Qubit0.50425GHz_25dBm_PiPulse50000ns_Count20_TimeStep35000.h5'
 path = directory + '\\' + fname
 pts_num = 20
 time_step = 35e3
@@ -29,8 +29,6 @@ guess = [phase[0]-phase[-1], 2e-4, 0, phase[-1]]
 popt, pcov = curve_fit(func, time*1e-9, phase, guess)
 
 a,b,c,d = popt #b is T1
-print count
-print time_step
 time_nice = np.linspace(0, pts_num*time_step, pts_num*100)
 phase_fit = func(time_nice*1e-9, a, b, c, d)
 perr = np.sqrt(abs(np.diag(pcov)))

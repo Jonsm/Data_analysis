@@ -6,6 +6,7 @@ from scipy.optimize import OptimizeWarning
 import warnings
 warnings.simplefilter("error", OptimizeWarning)
 warnings.simplefilter("error", RuntimeWarning)
+plt.rc('font', family='serif')
 
 def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
@@ -15,7 +16,7 @@ def funcRamsey(x, a, b, c, d, g):
 #################################################################################################################
 #Parameters
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
-fname = 'T1T2ET2R_loop_YOKO_28.583mA_Cav7.3649GHz_-15dBm_Qubit0.5044GHz_25dBm__PiPulse950ns_Count20_TimeStep20000.h5'
+fname = 'T1T2ET2R_loop_YOKO_28.53mA_Cav7.3649GHz_-15dBm_Qubit0.50425GHz_25dBm__PiPulse930ns_Count20_TimeStep20000.h5'
 path = directory + '\\' + fname
 pts_num = 20
 time_step_T2e = 20000
@@ -25,7 +26,7 @@ T1_guess = 100e-6
 T2e_guess = 100e-6
 T2r_guess = 20e-6
 f_Ramsey_guess = 0.1e6
-loop_num = 80
+loop_num = 21
 
 #################################################################################################################
 time_t2e = np.linspace(0, pts_num*time_step_T2e, pts_num)
@@ -147,9 +148,10 @@ with h5py.File(path,'r') as hf:
 plt.figure(4)
 plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b')
 plt.errorbar(loop_index, T2e_array, yerr=T2e_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
-plt.errorbar(loop_index, T2r_array, yerr=T2r_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'y', ecolor = 'y')
+# plt.errorbar(loop_index, T2r_array, yerr=T2r_err_array, fmt = 'D', mfc = 'none', mew = 2.0, mec = 'y', ecolor = 'y')
 plt.errorbar(loop_index, Tp_array, fmt = 'd', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
-plt.xlabel('Index')
-plt.ylabel(r'$\mu s$')
-plt.grid()
+# plt.xlabel('Index')
+# plt.ylabel(r'$\mu s$')
+plt.tick_params(labelsize = 18.0)
+# plt.grid()
 plt.show()

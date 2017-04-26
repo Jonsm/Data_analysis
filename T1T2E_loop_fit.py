@@ -13,13 +13,13 @@ def func(x, a, b, c, d):
 #################################################################################################################
 #Parameters
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
-fname = 'T1T2ELoop2_YOKO_28.583mA_Cav7.3649GHz_-15dBm_Qubit0.5043GHz_25dBm_PiPulse950ns_Count20_TimeStep20000.h5'
+fname = 'T1T2ELoop_YOKO_28.528mA_Cav7.3649GHz_-15dBm_Qubit0.505GHz_25dBm_PiPulse445ns_Count20_TimeStep20000.h5'
 path = directory + '\\' + fname
 pts_num = 20
 time_step = 20000
 T1_guess = 100e-6
-T2_guess = 100e-6
-loop_num = 65
+T2_guess = 20e-6
+loop_num = 11
 #################################################################################################################
 time_t2 = np.linspace(0, pts_num*time_step, pts_num)
 time_t1 = np.linspace(0, pts_num*time_step*1.75, pts_num)
@@ -100,9 +100,9 @@ with h5py.File(path,'r') as hf:
         T2_err_array = np.append(T2_err_array, T2_err)
         Tp = (T2**-1 - (2*T1)**-1)**-1
         Tp_array = np.append(Tp_array, Tp)
-print len(loop_index)
-print len(T1_array)
-print len(T2_array)
+# print len(loop_index)
+# print len(T1_array)
+# print len(T2_array)
 plt.figure(3)
 plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b')
 plt.errorbar(loop_index, T2_array, yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')

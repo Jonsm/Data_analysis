@@ -1,25 +1,15 @@
-from matplotlib import pyplot as plt
 import numpy as np
-import scipy.optimize as opt
+import matplotlib.pyplot as plt
 
-
-
-#File path
-directory = 'D:\Data\Fluxonium #10_7.5GHzCav\One_tone_spec'
-fname = 'One_tone_spec_28.575to28.575mA_7.55to7.6GHz_-15dBm.csv'
-path = directory + '\\' + fname
-imported = np.genfromtxt(path)[1:, :]
-freq = imported[1::, 0]
-phase = imported[1::, 1]
-mag = imported[1::, 2]
-magdB = 10*np.log10(mag)
-phase = np.unwrap(phase) * 180/np.pi
-phase_delay = (phase[-1]-phase[0])/(freq[-1]-freq[0])
-# phase = phase - freq*phase_delay
-phase = phase-np.mean(phase)
-plt.figure(1)
-plt.plot(freq, mag)
-plt.figure(2)
-plt.plot(freq, phase)
-
+directory = "D:\Data\Fluxonium #10_7.5GHzCav\T1"
+fname = "042117_T1_auto_28.45to28.6mA_twoToneResult.csv"
+path = directory + "\\" + fname
+data = np.genfromtxt(path)[1::]
+freq = data[:,1]
+phase = np.unwrap(data[:,3])
+# print freq
+# print phase
+print np.cos(np.pi/3)
+plt.plot(phase)
 plt.show()
+

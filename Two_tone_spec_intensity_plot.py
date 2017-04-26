@@ -4,9 +4,8 @@ from matplotlib import pyplot as plt
 
 #File path
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
-measurement = 'Two_tone_spec_YOKO_28.45to28.65mA_Cav_7.3649GHz&-15dBm_QuBit0.5to1.4GHz&20dBm'
+measurement = 'Two_tone_spec_YOKO_22.75to23.3mA_Cav_7.3654GHz&-15dBm_QuBit0.5to5.5GHz&25dBm'
 path = directory + '\\' + measurement
-
 
 #Read data
 current = np.genfromtxt(path + '_CURRENT.csv')#*1e3
@@ -17,24 +16,17 @@ data = np.genfromtxt(path + '_PHASEMAG.csv')
 phase = data[1::,0] #phase is recorded in rad
 mag = data[1::,1]
 Z = np.zeros((len(current),len(freq)))
-# print (phase)
+
 for idx in range(len(current)):
     temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
     temp = temp*180/(np.pi)
     # temp = mag[idx*len(freq):(idx+1)*len(freq)]
     Z[idx,:] = temp - np.max(temp)
-
-plt.close("all")
+plt.figure(1)
 X,Y = np.meshgrid(current,freq)
-plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = -1.5, vmax = 0.5)
-#plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu_r')#, vmax=-0.0001)
-plt.colorbar()
-plt.xlim([current[0], current[-1]])
-plt.ylim([freq[0],freq[-1]])
-plt.xlabel('current (mA)')
-plt.ylabel('Qubit freq (GHz)')
-plt.grid()
-plt.show()
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = -15, vmax = 1)
+
+
 #############################################################################################
 
 # for idx in range(len(current)):
@@ -42,11 +34,9 @@ plt.show()
 #     Z[idx,:] = temp - np.average(temp)
 #
 # plt.figure(2)
-# plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu_r')#,vmin = 0)
+# plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu')#,vmin = 0)
 # plt.colorbar()
 # plt.xlabel('current (mA)')
 # plt.ylabel('Frequency (GHz)')
-# plt.grid()
-# plt.yticks(np.linspace(freq[0],freq[-1],4))
-# plt.ion()
-# print phase
+plt.colorbar()
+plt.show()

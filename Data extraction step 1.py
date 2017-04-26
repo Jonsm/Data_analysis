@@ -6,35 +6,141 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from matplotlib import rc
 rc('text', usetex=False)
+fig = plt.figure()
 
 #Enter directory and name of measurement
-directory = 'G:\Projects\Fluxonium & qubits\Data\\2016_01\\13'
-measurement = 'S21_Phase2tones_ZNB_0&n40_BW100Hz_SMB_n20dBm_6to8GHz_YOKO_n7ton10V'
-path_data = directory + '\\' + measurement + '_Phase.csv'
-path_freq = directory + '\\' + measurement + '_Freq.csv'
-path_vol = directory + '\\' + measurement + '_Voltage.csv'
+#File path
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
+measurement = 'Two_tone_spec_YOKO_28.4to28.44mA_Cav_7.3649GHz&-15dBm_QuBit0.5to1.5GHz&16dBm'
+path = directory + '\\' + measurement
 
-RawData = np.genfromtxt(path_data, delimiter =',')
-Freq = np.genfromtxt(path_freq, delimiter =',')/1e9
-V = np.genfromtxt(path_vol, delimiter =',')
+#Read data
+current = np.genfromtxt(path + '_CURRENT.csv')#*1e3
+current = current[1:-1]
+freq = np.genfromtxt(path + '_FREQ.csv')
+freq = freq[1::]
+data = np.genfromtxt(path + '_PHASEMAG.csv')
+phase = data[1::,0] #phase is recorded in rad
+mag = data[1::,1]
+Z = np.zeros((len(current),len(freq)))
+# print (phase)
+for idx in range(len(current)):
+    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
+    temp = temp*180/(np.pi)
+    # temp = mag[idx*len(freq):(idx+1)*len(freq)]
+    Z[idx,:] = temp - np.max(temp)
 
-Z = RawData.transpose()
-          
-#Optional: calculate differential
-Z_diff = np.diff(Z.transpose()) 
-Z_diff = Z_diff.transpose()
 
-#Plot the intensity map
-X, Y = np.meshgrid(V,Freq)
-fig=plt.figure()
-plt.pcolormesh(X, Y, Z, cmap=cm.BuGn, vmin =-1 , vmax =1)
-plt.title(measurement)
-plt.xlabel("Voltage (V)")
-plt.ylabel("Frequency (GHz)")
-plt.colorbar()
+X,Y = np.meshgrid(current,freq)
+plt.figure(1)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu_r', vmin = -0.5, vmax = 0.5)
+
+##############################################################################################################################
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
+measurement = 'Two_tone_spec_YOKO_28.44to28.8mA_Cav_7.3649GHz&-15dBm_QuBit0.5to1.5GHz&20dBm'
+path = directory + '\\' + measurement
+
+#Read data
+current = np.genfromtxt(path + '_CURRENT.csv')#*1e3
+current = current[1:-1]
+freq = np.genfromtxt(path + '_FREQ.csv')
+freq = freq[1::]
+data = np.genfromtxt(path + '_PHASEMAG.csv')
+phase = data[1::,0] #phase is recorded in rad
+mag = data[1::,1]
+Z = np.zeros((len(current),len(freq)))
+# print (phase)
+for idx in range(len(current)):
+    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
+    temp = temp*180/(np.pi)
+    # temp = mag[idx*len(freq):(idx+1)*len(freq)]
+    Z[idx,:] = temp - np.max(temp)
+
+
+X,Y = np.meshgrid(current,freq)
+plt.figure(1)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu_r', vmin = -0.5, vmax = 0.5)
+
+##############################################################################################################################
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
+measurement = 'Two_tone_spec_YOKO_28.526to28.529mA_Cav_7.3649GHz&-15dBm_QuBit0.5to0.51GHz&0dBm'
+path = directory + '\\' + measurement
+
+#Read data
+current = np.genfromtxt(path + '_CURRENT.csv')#*1e3
+current = current[1:-1]
+freq = np.genfromtxt(path + '_FREQ.csv')
+freq = freq[1::]
+data = np.genfromtxt(path + '_PHASEMAG.csv')
+phase = data[1::,0] #phase is recorded in rad
+mag = data[1::,1]
+Z = np.zeros((len(current),len(freq)))
+# print (phase)
+for idx in range(len(current)):
+    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
+    temp = temp*180/(np.pi)
+    # temp = mag[idx*len(freq):(idx+1)*len(freq)]
+    Z[idx,:] = temp - np.max(temp)
+
+
+X,Y = np.meshgrid(current,freq)
+plt.figure(1)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu_r', vmin = -0.5, vmax = 0)
+
+##############################################################################################################################
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
+measurement = 'Two_tone_spec_YOKO_28.529to28.53mA_Cav_7.3649GHz&-15dBm_QuBit0.5to0.51GHz&0dBm'
+path = directory + '\\' + measurement
+
+#Read data
+current = np.genfromtxt(path + '_CURRENT.csv')#*1e3
+current = current[1:-1]
+freq = np.genfromtxt(path + '_FREQ.csv')
+freq = freq[1::]
+data = np.genfromtxt(path + '_PHASEMAG.csv')
+phase = data[1::,0] #phase is recorded in rad
+mag = data[1::,1]
+Z = np.zeros((len(current),len(freq)))
+# print (phase)
+for idx in range(len(current)):
+    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
+    temp = temp*180/(np.pi)
+    # temp = mag[idx*len(freq):(idx+1)*len(freq)]
+    Z[idx,:] = temp - np.max(temp)
+
+
+X,Y = np.meshgrid(current,freq)
+plt.figure(1)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu_r', vmin = -0.5, vmax = 0)
+
+##############################################################################################################################
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
+measurement = 'Two_tone_spec_YOKO_28.53to28.535mA_Cav_7.3649GHz&-15dBm_QuBit0.5to0.51GHz&0dBm'
+path = directory + '\\' + measurement
+
+#Read data
+current = np.genfromtxt(path + '_CURRENT.csv')#*1e3
+current = current[1:-1]
+freq = np.genfromtxt(path + '_FREQ.csv')
+freq = freq[1::]
+data = np.genfromtxt(path + '_PHASEMAG.csv')
+phase = data[1::,0] #phase is recorded in rad
+mag = data[1::,1]
+Z = np.zeros((len(current),len(freq)))
+# print (phase)
+for idx in range(len(current)):
+    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
+    temp = temp*180/(np.pi)
+    # temp = mag[idx*len(freq):(idx+1)*len(freq)]
+    Z[idx,:] = temp - np.max(temp)
+
+
+X,Y = np.meshgrid(current,freq)
+plt.figure(1)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu_r', vmin = -0.5, vmax = 0)
 
 #Click on the points on screen to define an approximation line for interpolation
 def onclick(event):
-    print '[%f, %f],'%(event.xdata, event.ydata)
+    print ('[%f, %f],'%(event.xdata, event.ydata))
 cid = fig.canvas.mpl_connect('button_press_event', onclick)
 plt.show()
