@@ -1,17 +1,21 @@
-from matplotlib import pyplot as plt
 import numpy as np
+from matplotlib import pyplot as plt
+
 
 #File path
-directory = 'D:\Data\Fluxonium #10_New software'
-measurement = 'test.dat'
-path = directory + '\\' + measurement
+directory = "D:\Data\Fluxonium #10"
+fname = "One tune spectroscopy_YOKO 0mAto50mA_ qubit tone off_Cav_10p30GHz to 10p32GHz_1dBm_pulse_4000_2800_after 2nd thermal cycle"
+path = directory + '\\' + fname
 
-data = np.genfromtxt(path)
-phase = np.unwrap(data[1::,0])*180/np.pi
-mag =  data[1::,1]
-freq = np.linspace(10.3,10.4,len(phase))
-slope = (phase[-1]-phase[0])/(freq[-1]-freq[0])
-plt.plot(freq,mag)
-plt.show()
-plt.plot(freq,phase-slope*freq)
+#Read data
+current = np.genfromtxt(path + '_Current.csv', delimiter = ',')
+current = current[0::]
+freq = np.genfromtxt(path + '_Freq.csv', delimiter = ',')
+freq = freq[0::]
+mag = np.genfromtxt(path + '_Phase d.csv', delimiter = ',')
+
+X,Y = np.meshgrid(current, freq)
+
+Z = mag.transpose()
+plt.pcolormesh(X,Y,Z)
 plt.show()

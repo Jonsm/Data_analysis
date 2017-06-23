@@ -3,9 +3,9 @@ from matplotlib import pyplot as plt
 
 
 #File path
-directory = 'D:\Data\Fluxonium #10_7.5GHzCav\One_tone_spec'
-measurement = 'One_tone_spec_80to90mA_7.35to7.38GHz_-15dBm'
-path = directory + '\\' + measurement
+directory = "D:\Data\Fluxonium #10"
+fname = "One tune spectroscopy_YOKO 0mAto50mA_ qubit tone off_Cav_10p30GHz to 10p32GHz_1dBm_pulse_4000_2800_after 2nd thermal cycle"
+path = directory + '\\' + fname
 
 #Read data
 current = np.genfromtxt(path + '_CURRENT.csv')

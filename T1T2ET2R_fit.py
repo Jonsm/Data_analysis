@@ -9,7 +9,7 @@ def func(x, a, b, c, d):
 #################################################################################################################
 #Parameters
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
-fname = '042117_T1T2ET2R_loop_YOKO_28.53mA_Cav7.3649GHz_-15dBm_Qubit0.50425GHz_25dBm__PiPulse930ns_Count20_TimeStep20000.h5'
+fname = 'T1T2ET2R_YOKO_28.551mA_Cav7.3685GHz_-15dBm_Qubit0.504GHz_25dBm__PiPulse833ns_Count20_TimeStep20000.h5'
 path = directory + '\\' + fname
 pts_num = 20
 time_step = 20000

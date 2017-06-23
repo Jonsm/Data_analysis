@@ -293,8 +293,8 @@ d_fit = opt[5]
 offset_squid_fit = opt[6]
 offset_ext_fit = opt[7]
 
-print 'E_l=' + str(E_l_fit) + ', E_c=' + str(E_c_fit) + ', E_j_sum=' + str(E_j_fit) + '\n' + 'A_j=' + str(A_j_fit) + ', A_c=' + str(A_c_fit) + ', d=' + str(d_fit)# + \
-', beta_squid=' + str(offset_squid_fit) + ', beta_ext=' + str(offset_ext_fit)
+print ('E_l=' + str(E_l_fit) + ', E_c=' + str(E_c_fit) + ', E_j_sum=' + str(E_j_fit) + '\n' + 'A_j=' + str(A_j_fit) + ', A_c=' + str(A_c_fit) + ', d=' + str(d_fit) + \
+', beta_squid=' + str(offset_squid_fit) + ', beta_ext=' + str(offset_ext_fit))
 #Only plot the first excited state transition
 
 current = np.linspace(0.04,0.05,1000)

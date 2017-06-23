@@ -7,20 +7,23 @@ import warnings
 warnings.simplefilter("error", OptimizeWarning)
 warnings.simplefilter("error", RuntimeWarning)
 
-def func(x, a, b, c, d):
-    return a*np.exp(-(x-c)/b) + d
+def func(x, a, b, c, d, g):
+    return a*np.exp(-x/b)*np.cos(2*np.pi*c*((x-g))) + d
 
-directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
-fname = '061517_T2ELoop_YOKO_28.661mA_Cav7.3641GHz_-7dBm_Qubit0.5141GHz_25dBm_PiPulse2776ns_Count20_TimeStep10000_loop_100.h5'
+directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2R'
+fname = '062217_T2R_YOKO_24.49mA_Cav7.3644GHz_-7dBm_Qubit4.1335GHz_25dBm_PiPulse420ns_Count40_TimeStep20.h5'
 path = directory + '\\' + fname
 T2_array = []
 T2_err_array = []
-pts_num = 20
-time_step = 20000
-t2_guess = 150e-6
+fR_array = []
+fR_err_array = []
+pts_num = 40
+time_step = 20
+t2_guess = 1e-6
+f2_guess = 2e6
 time = np.linspace(0, pts_num*time_step, pts_num)
 time_nice = np.linspace(0, pts_num*time_step, pts_num*100)
-loop_count = 100
+loop_count = 90
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())
@@ -32,7 +35,7 @@ with h5py.File(path,'r') as hf:
         phase = np.unwrap(phase)*180/np.pi
         phase = phase - np.min(phase)
         phase = abs(phase)
-        guess = [phase[0]-phase[-1], t2_guess, 0, phase[-1]]
+        guess = [np.max(phase) - np.min(phase), t2_guess, f2_guess, 0, 0]
         try:
             popt, pcov = curve_fit(func, time*1e-9, phase, guess)
         except RuntimeError:
@@ -45,16 +48,20 @@ with h5py.File(path,'r') as hf:
             print ("Doesn't fit well entry " + str(idx))
             continue
 
-        a,b,c,d = popt #b is T1
+        a,b,c,d,g = popt #b is T2, c is fR
 
-        phase_fit = func(time_nice*1e-9, a, b, c, d)
+        phase_fit = func(time_nice*1e-9, a, b, c, d, g)
         perr = np.sqrt(abs(np.diag(pcov)))
         T2 = b*1e6
         T2_err = perr[1]*1e6
+        fR = c*1e-3 #in kHz
+        fR_err = perr[2]*1e-3
         if T2 < time_step*1e-3:
             continue
         T2_array = np.append(T2_array, T2)
         T2_err_array = np.append(T2_err_array, T2_err)
+        fR_array = np.append(fR_array, fR)
+        fR_err_array = np.append(fR_err_array, fR_err)
         plt.figure(1)
         plt.plot(time, phase, 'g-o', alpha = 0.25)
         plt.plot(time_nice, phase_fit, 'k-')
@@ -63,5 +70,7 @@ with h5py.File(path,'r') as hf:
 
 count = np.linspace(0, len(T2_array), len(T2_array))
 plt.figure(2)
-plt.errorbar(count, T2_array, yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
+plt.errorbar(count, T2_array, yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'y', ecolor = 'y')
+plt.figure(3)
+plt.errorbar(count, fR_array, yerr=fR_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'k', ecolor = 'k')
 plt.show()

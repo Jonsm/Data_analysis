@@ -7,10 +7,10 @@ def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
-fname = 'T2E_YOKO_28.53mA_Cav7.3649GHz_-15dBm_Qubit0.50425GHz_25dBm_PiPulse930ns_Count20_TimeStep20000_Avg_10000.h5'
+fname = '061917_T2E_YOKO_28.832mA_Cav7.36417GHz_-7dBm_Qubit0.51408GHz_25dBm_PiPulse2806ns_Count20_TimeStep20000_Avg_10000.h5'
 path = directory + '\\' + fname
 pts_num = 20
-time_step = 20000
+time_step = 40000
 time = np.linspace(0, pts_num*time_step, pts_num)
 
 #Read data and fit
@@ -25,7 +25,7 @@ with h5py.File(path,'r') as hf:
     phase = abs(phase)
 plt.plot(time, phase, 'r-o')
 
-guess = [phase[0]-phase[-1], 100e-6, 0, phase[-1]]
+guess = [phase[0]-phase[-1], 5e-6, 0, phase[-1]]
 popt, pcov = curve_fit(func, time*1e-9, phase, guess)
 a,b,c,d = popt #b is T1
 time_nice  = np.linspace(0, pts_num*time_step, pts_num*100)

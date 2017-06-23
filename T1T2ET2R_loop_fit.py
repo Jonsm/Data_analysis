@@ -16,12 +16,12 @@ def funcRamsey(x, a, b, c, d, g):
 #################################################################################################################
 #Parameters
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
-fname = 'T1T2ET2R_loop_YOKO_28.53mA_Cav7.3649GHz_-15dBm_Qubit0.50425GHz_25dBm__PiPulse930ns_Count20_TimeStep20000.h5'
+fname = '061917_T1T2ET2R_loop_YOKO_28.832mA_Cav7.36417GHz_-7dBm_Qubit0.514GHz_25dBm__PiPulse2806ns_Count20_TimeStepT135000_TimeStepT2E20000_TimeStepT2R1500_loop100.h5'
 path = directory + '\\' + fname
 pts_num = 20
-time_step_T2e = 20000
-time_step_T1 = time_step_T2e*1.75
-time_step_T2r = time_step_T2e*0.08
+time_step_T2e = 40000
+time_step_T1 = 35000
+time_step_T2r = 1500
 T1_guess = 100e-6
 T2e_guess = 100e-6
 T2r_guess = 20e-6
@@ -38,6 +38,8 @@ T2e_array = []
 T2e_err_array = []
 T2r_array = []
 T2r_err_array = []
+f_R_array = []
+f_R_err_array = []
 Tp_array = []
 loop_index = []
 
@@ -68,13 +70,13 @@ with h5py.File(path,'r') as hf:
         try:
             popt, pcov = curve_fit(func, time_t1*1e-9, phase_t1, guess)
         except RuntimeError:
-            print "Doesn't fit well entry " + str(idx)
+            print ("Doesn't fit well entry " + str(idx))
             continue
         except RuntimeWarning:
-            print "Doesn't fit well entry " + str(idx)
+            print ("Doesn't fit well entry " + str(idx))
             continue
         except OptimizeWarning:
-            print "Doesn't fit well entry " + str(idx)
+            print ("Doesn't fit well entry " + str(idx))
             continue
         a,b,c,d = popt #b is T1
         time_nice  = np.linspace(0, pts_num*time_step_T1, pts_num*100)
@@ -83,7 +85,7 @@ with h5py.File(path,'r') as hf:
         T1 = b*1e6
         T1_err = perr[1]*1e6
         plt.figure(1)
-        plt.plot(time_t1, phase_t1, '-o')
+        plt.plot(time_t1, phase_t1, 'k-o', alpha = 0.2)
         plt.plot(time_nice, phase_fit)
 
         ############################################################################
@@ -91,13 +93,13 @@ with h5py.File(path,'r') as hf:
         try:
             popt, pcov = curve_fit(func, time_t2e*1e-9, phase_t2e, guess)
         except RuntimeError:
-            print "Doesn't fit well entry " + str(idx)
+            print ("Doesn't fit well entry " + str(idx))
             continue
         except RuntimeWarning:
-            print "Doesn't fit well entry " + str(idx)
+            print ("Doesn't fit well entry " + str(idx))
             continue
         except OptimizeWarning:
-            print "Doesn't fit well entry " + str(idx)
+            print ("Doesn't fit well entry " + str(idx))
             continue
         a,b,c,d = popt #b is T1
         time_nice  = np.linspace(0, pts_num*time_step_T2e, pts_num*100)
@@ -106,7 +108,7 @@ with h5py.File(path,'r') as hf:
         T2e = b*1e6
         T2e_err = perr[1]*1e6
         plt.figure(2)
-        plt.plot(time_t2e, phase_t2e, '-o')
+        plt.plot(time_t2e, phase_t2e, 'k-o', alpha = 0.2)
         plt.plot(time_nice, phase_fit)
 
         ############################################################################
@@ -114,13 +116,13 @@ with h5py.File(path,'r') as hf:
         try:
             popt, pcov = curve_fit(funcRamsey, time_t2r*1e-9, phase_t2r, guess)
         except RuntimeError:
-            print "Doesn't fit well entry " + str(idx)
+            print ("Doesn't fit well entry " + str(idx))
             continue
         except RuntimeWarning:
-            print "Doesn't fit well entry " + str(idx)
+            print ("Doesn't fit well entry " + str(idx))
             continue
         except OptimizeWarning:
-            print "Doesn't fit well entry " + str(idx)
+            print ("Doesn't fit well entry " + str(idx))
             continue
         a,b,c,d,g = popt
         time_nice  = np.linspace(0, pts_num*time_step_T2r, pts_num*100) #ns
@@ -128,10 +130,14 @@ with h5py.File(path,'r') as hf:
         perr = np.sqrt(abs(np.diag(pcov)))
         T2r = b*1e6
         T2r_err = perr[1]*1e6
+        f_R = c/1e6 #MHz
+        f_R_err = perr[2]/1e6
+        #if T2r_err > T2r or T2r_err > T2e:
+           # print "Doesn't fit well entry " + str(idx)
+           # continue
         plt.figure(3)
-        plt.plot(time_t2r, phase_t2r, '-o')
+        plt.plot(time_t2r, phase_t2r, 'k-o', alpha = 0.2)
         plt.plot(time_nice, phase_fit)
-
 
         loop_index = np.append(loop_index, idx)
         T1_array = np.append(T1_array, T1)
@@ -140,18 +146,28 @@ with h5py.File(path,'r') as hf:
         T2e_err_array = np.append(T2e_err_array, T2e_err)
         T2r_array = np.append(T2r_array, T2r)
         T2r_err_array = np.append(T2r_err_array, T2r_err)
+        f_R_array = np.append(f_R_array, f_R)
+        f_R_err_array = np.append(f_R_err_array, f_R_err)
         Tp = (T2e**-1 - (2*T1)**-1)**-1
         Tp_array = np.append(Tp_array, Tp)
 # print len(loop_index)
 # print len(T1_array)
 # print len(T2e_array)
+
 plt.figure(4)
 plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b')
 plt.errorbar(loop_index, T2e_array, yerr=T2e_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
-# plt.errorbar(loop_index, T2r_array, yerr=T2r_err_array, fmt = 'D', mfc = 'none', mew = 2.0, mec = 'y', ecolor = 'y')
-plt.errorbar(loop_index, Tp_array, fmt = 'd', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
-# plt.xlabel('Index')
-# plt.ylabel(r'$\mu s$')
+plt.errorbar(loop_index, T2r_array, yerr=T2r_err_array, fmt = 'D', mfc = 'none', mew = 2.0, mec = 'y', ecolor = 'y')
+#plt.errorbar(loop_index, Tp_array, fmt = 'd', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
+plt.xlabel('Index')
+plt.ylabel(r'$\mu s$')
 plt.tick_params(labelsize = 18.0)
-# plt.grid()
+
+
+plt.figure(5)
+plt.errorbar(loop_index, f_R_array, yerr=f_R_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
+plt.xlabel('Index')
+plt.ylabel('Ramsey f(MHz)')
+plt.tick_params(labelsize = 14.0)
+plt.grid()
 plt.show()
