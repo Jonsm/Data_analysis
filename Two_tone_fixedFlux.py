@@ -9,7 +9,7 @@ def lorentzian (x,gamma,x0,h,offset):
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Two_tone_spec'
 # directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Three_tone_spec'
 # directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Raman'
-measurement = '062317_Two_tone_spec_YOKO_24.49to24.49mA_Cav_7.3644GHz&-7dBm_QuBit4.1to4.2GHz&25dBm'
+measurement = '062517_Two_tone_spec_YOKO_24.49to24.49mA_Cav_7.3644GHz&-7dBm_QuBit4.1to4.2GHz&25dBm'
 path = directory + '\\' + measurement
 
 freq = np.genfromtxt(path + '_FREQ.csv')

@@ -10,7 +10,7 @@ def func(x,a,b,c,d):
     return a*np.cos(2*np.pi*b*(x-c)) + d
 directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Rabi'
 # directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Raman'
-fname = '062317_Rabi_YOKO_24.49mA_Cav7.3644GHz_-7dBm_Qubit4.136GHz_25dBm_Count20_TimeStep50_Avg10000.h5'
+fname = '062517_Rabi_YOKO_24.49mA_Cav7.3644GHz_-7dBm_Qubit4.137GHz_25dBm_Count20_TimeStep50_Avg10000.h5'
 path = directory + '\\' + fname
 pts_num = 20
 time_step = 50
