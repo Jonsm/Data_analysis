@@ -4,15 +4,15 @@ import h5py
 from scipy.optimize import curve_fit
 
 def func(x, a, b, c, d):
-    return a*np.exp(-(x-c)/b) + d
+    return a*np.exp(-((x-c)/b)**2) + d
 
-directory = 'D:\Data\Fluxonium #22\T2E'
-fname = '020418_T2E_YOKO_90.604mA_Cav7.3262GHz_-14dBm_Qubit0.17285GHz_25dBm_PiPulse2536ns_Count30_TimeStep20000_Avg_20000.h5'
+directory = 'D:\Data\Fluxonium #13\T2E'
+fname = '091917_Rabi_YOKO_90.97mA_Cav7.3692GHz_-30dBm_Qubit0.8563GHz_20dBm_Count20_TimeStep50_Avg10000.h5'
 path = directory + '\\' + fname
 pts_num = 30
-time_step = 20000
+time_step = 4000
 time = np.linspace(0, pts_num*time_step, pts_num)
-t2_guess = 50e-6
+t2_guess = 10e-6
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())

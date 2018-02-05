@@ -10,17 +10,20 @@ warnings.simplefilter("error", RuntimeWarning)
 def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
+def func_g(x, a, b, c, d):
+    return a*np.exp(-((x-c)/b)**2) + d
+
 #################################################################################################################
 #Parameters
-directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
-fname = 'T1T2ELoop_YOKO_28.66mA_Cav7.36415GHz_-7dBm_Qubit0.5141GHz_25dBm_PiPulse2815ns_Count20_TimeStepT2E20000_TimeStepT135000.h5'
+directory = 'D:\Data\Fluxonium #13\T2E'
+fname = 'T1T2ELoop_YOKO_91.015mA_Cav7.3692GHz_-30dBm_Qubit0.7821GHz_25dBm_PiPulse264ns_Count30_TimeStepT2E10000_TimeStepT120000.h5'
 path = directory + '\\' + fname
-pts_num = 20
-time_step_T1 = 35000
-time_step_T2E = 40000
+pts_num = 30
+time_step_T1 = 20000
+time_step_T2E = 10000
 T1_guess = 100e-6
 T2_guess = 100e-6
-loop_num = 50
+loop_num = 101
 #################################################################################################################
 time_t2 = np.linspace(0, pts_num*time_step_T2E, pts_num)
 time_t1 = np.linspace(0, pts_num*time_step_T1, pts_num)
@@ -106,9 +109,12 @@ with h5py.File(path,'r') as hf:
 # print len(T2_array)
 plt.figure(3)
 plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b')
-plt.errorbar(loop_index, T2_array, yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
+plt.errorbar(loop_index, T2_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
+plt.errorbar(loop_index, (T2_array**-1 - (2*T1_array)**-1)**-1 , yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
+plt.yscale("log")
+plt.tick_params(labelsize = 18.0)
 #plt.errorbar(loop_index, Tp_array, fmt = 'd', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
-plt.xlabel('Index')
-plt.ylabel(r'$\mu s$')
-plt.grid()
+# plt.xlabel('Index')
+# plt.ylabel(r'$\mu s$')
+# plt.grid()
 plt.show()

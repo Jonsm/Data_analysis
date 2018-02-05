@@ -10,17 +10,17 @@ warnings.simplefilter("error", RuntimeWarning)
 def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
-directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T2E'
-fname = '061517_T2ELoop_YOKO_28.661mA_Cav7.3641GHz_-7dBm_Qubit0.5141GHz_25dBm_PiPulse2776ns_Count20_TimeStep10000_loop_100.h5'
+directory = 'D:\Data\Fluxonium #22\T2E'
+fname = '020318_T2ELoop_YOKO_61.131mA_Cav7.3263GHz_-10dBm_Qubit0.174GHz_25dBm_PiPulse3166ns_Count25_TimeStep24000_loop_100.h5'
 path = directory + '\\' + fname
 T2_array = []
 T2_err_array = []
-pts_num = 20
-time_step = 20000
-t2_guess = 150e-6
+pts_num = 25
+time_step = 24000
+t2_guess = 100e-6
 time = np.linspace(0, pts_num*time_step, pts_num)
 time_nice = np.linspace(0, pts_num*time_step, pts_num*100)
-loop_count = 100
+loop_count = 61
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())
@@ -51,17 +51,20 @@ with h5py.File(path,'r') as hf:
         perr = np.sqrt(abs(np.diag(pcov)))
         T2 = b*1e6
         T2_err = perr[1]*1e6
-        if T2 < time_step*1e-3:
+        if T2 < time_step*1e-3:# or a>0:
             continue
+
         T2_array = np.append(T2_array, T2)
         T2_err_array = np.append(T2_err_array, T2_err)
         plt.figure(1)
-        plt.plot(time, phase, 'g-o', alpha = 0.25)
-        plt.plot(time_nice, phase_fit, 'k-')
+        plt.tick_params(labelsize = 18.0)
+        plt.plot(time*1e-3, phase, 'g-o', alpha = 0.25)
+        plt.plot(time_nice*1e-3, phase_fit, 'k-')
         # print T2
         # print T2_err
 
 count = np.linspace(0, len(T2_array), len(T2_array))
 plt.figure(2)
 plt.errorbar(count, T2_array, yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
+plt.tick_params(labelsize = 18.0)
 plt.show()

@@ -10,15 +10,15 @@ warnings.simplefilter("error", RuntimeWarning)
 def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
-directory = 'D:\Data\Fluxonium #10_7.5GHzCav\T1'
-fname = '062317_T1_YOKO_24.49mA_Cav7.3644GHz_-7dBm_Qubit4.13477GHz_25dBm_PiPulse420ns_Count20_TimeStep100000_LoopNum_10_loop_10.h5'
+directory = 'D:\Data\Fluxonium #13\T1'
+fname = '091117_T1_YOKO_90.015mA_Cav7.3692GHz_-30dBm_Qubit0.7821GHz_25dBm_PiPulse265ns_Count30_TimeStep20000_loop_100.h5'
 path = directory + '\\' + fname
 T1_array = []
 T1_err_array = []
-pts_num = 20
-time_step = 100000
-loop_count = 4
-t1_guess = 400e-6
+pts_num = 30
+time_step = 20000
+loop_count = 100
+t1_guess = 100e-6
 time = np.linspace(0, pts_num*time_step, pts_num)
 
 #Read data and fit
@@ -45,6 +45,7 @@ with h5py.File(path,'r') as hf:
             print ("Doesn't fit well entry " + str(idx))
             continue
         plt.figure(1)
+        plt.tick_params(labelsize = 18.0)
         a,b,c,d = popt #b is T1
         time_nice = np.linspace(0, pts_num*time_step, pts_num*100)
         phase_fit = func(time_nice*1e-9, a, b, c, d)
@@ -53,10 +54,12 @@ with h5py.File(path,'r') as hf:
         T1_err = perr[1]*1e6
         T1_array = np.append(T1_array, T1)
         T1_err_array = np.append(T1_err_array, T1_err)
-        plt.plot(time,phase, 'g-o', alpha = 0.25)
-        plt.plot(time_nice, phase_fit, 'k-')
+        plt.plot(time*1e-3,phase, 'b-o', alpha = 0.25)
+        plt.plot(time_nice*1e-3, phase_fit, 'k-')
 
 count = np.linspace(0, len(T1_array), len(T1_array))
 plt.figure(2)
 plt.errorbar(count, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b')
+plt.tick_params(labelsize = 18.0)
+# plt.grid()
 plt.show()
