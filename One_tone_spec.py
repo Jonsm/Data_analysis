@@ -3,8 +3,8 @@ from matplotlib import pyplot as plt
 
 
 #File path
-directory = "D:\Data\Fluxonium #20\One_tone"
-fname = "010918_One_tone_spec_0to0mA_7.3to7.6GHz_-10dBm"
+directory = "D:\Data\Fluxonium #28\One_tone"
+fname = '051718_One_tone_spec_98.2to98.2mA_7.32to7.36GHz_-25dBm'
 path = directory + '\\' + fname
 
 #Read data
@@ -31,15 +31,15 @@ for idx in range(len(current)):
 
 X,Y = np.meshgrid(current, freq)
 plt.figure(1)
-plt.pcolormesh(X,Y,Z_mag.transpose(), cmap= 'GnBu')#, vmax=0.003)
+plt.pcolormesh(X,Y,Z_mag.transpose(), cmap= 'GnBu', vmax=0.001, vmin = -0.0001)
 plt.colorbar()
 plt.xlim([current[0], current[-1]])
 plt.ylim([freq[0],freq[-1]])
 
-plt.figure(2)
-X,Y = np.meshgrid(current, freq[0:-1])
-plt.pcolormesh(X,Y,Z_phase.transpose(), cmap= 'GnBu_r')#, vmin = , vmax=-20)
-plt.colorbar()
-plt.xlim([current[0], current[-1]])
-plt.ylim([freq[0],freq[-1]])
+# plt.figure(2)
+# X,Y = np.meshgrid(current, freq[0::])
+# plt.pcolormesh(X,Y,Z_phase.transpose(), cmap= 'GnBu')#, vmin = , vmax=-20)
+# plt.colorbar()
+# plt.xlim([current[0], current[-1]])
+# plt.ylim([freq[0],freq[-1]])
 plt.show()

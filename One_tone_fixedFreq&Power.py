@@ -1,8 +1,8 @@
 from matplotlib import pyplot as plt
 import numpy as np
 
-directory = 'D:\Data\Fluxonium #22\One_tone'
-fname = 'One_tone_spec_fixedFreq_0to2_mA_7.326GHz_-10dBm'
+directory = 'D:\Data\Fluxonium #23\One_tone'
+fname = '052418_One_tone_spec_fixedFreq_5to0_mA_7.5613GHz_-20dBm'
 path = directory + '\\' + fname
 
 current = np.genfromtxt(path+'_PHASEMAG.csv')[1::,0]

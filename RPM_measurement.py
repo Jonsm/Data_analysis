@@ -6,9 +6,9 @@ from scipy.optimize import curve_fit
 from matplotlib import rc
 plt.rc('font', family='serif')
 # plt.figure(figsize = [10,7])
-def func(x,a,b,c,d,tau):
-    return a*np.cos(2*np.pi*b*(x-c))*np.exp(-x/tau) + d
-directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Rabi'
+# def func(x,a,b,c,d,tau):
+#     return a*np.cos(2*np.pi*b*(x-c))*np.exp(-x/tau) + d
+# directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Rabi'
 # directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Raman'
 # fname = '050617_Rabi3Tone014A_YOKO_28.551mA_Cav7.36485GHz_-15dBm_Qubit0.504GHz_25dBm_Qubit125.52879GHz_10dBm_Count20_TimeStep30_Avg100000.h5'
 # path = directory + '\\' + fname
@@ -53,16 +53,17 @@ directory = 'D:\Data\Fluxonium #10_7.5GHzCav\Rabi'
 ###############################################################################################################
 h = 6.62606876e-34
 kB = 1.3806503e-23
-f01 = 0.782e9
-f02 = 2.354e9
-# ratio = Aa/Ab
-ratio = 2.19/4.9
-T_eff = -h*f01/(kB*np.log(ratio))
+f = .6343e9
+# f02 = 5.549e9
+Aa = .0996
+Ab = .238
+ratio = Aa/Ab
+T_eff = -h*f/(kB*np.log(ratio))
 print ('ratio=' + str(ratio))
 print ('T_eff=' + str(T_eff*1e3))
 ###############################################################################################################
-f = 3.43e9
-print (np.exp(-h*f/(kB*T_eff)))
+# f = 3.43e9
+# print (np.exp(-h*f/(kB*T_eff)))
 ###############################################################################################################
 # T=np.linspace(1,100,1000)*1e-3
 # y1 = ratio*(1-np.exp(-h*f02/(kB*T)))

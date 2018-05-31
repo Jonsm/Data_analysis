@@ -10,17 +10,17 @@ warnings.simplefilter("error", RuntimeWarning)
 def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
-directory = 'D:\Data\Fluxonium #22\T2E'
-fname = '020318_T2ELoop_YOKO_61.131mA_Cav7.3263GHz_-10dBm_Qubit0.174GHz_25dBm_PiPulse3166ns_Count25_TimeStep24000_loop_100.h5'
+directory = 'D:\Data\Fluxonium #28\T2E'
+fname = '051418_T2ELoop_YOKO_62.118mA_Cav7.337GHz_-25dBm_Qubit0.33618GHz_25dBm_PiPulse571ns_Count25_TimeStep20000_loop_10.h5'
 path = directory + '\\' + fname
 T2_array = []
 T2_err_array = []
 pts_num = 25
-time_step = 24000
+time_step = 20000
 t2_guess = 100e-6
 time = np.linspace(0, pts_num*time_step, pts_num)
 time_nice = np.linspace(0, pts_num*time_step, pts_num*100)
-loop_count = 61
+loop_count = 11
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())
@@ -51,8 +51,8 @@ with h5py.File(path,'r') as hf:
         perr = np.sqrt(abs(np.diag(pcov)))
         T2 = b*1e6
         T2_err = perr[1]*1e6
-        if T2 < time_step*1e-3:# or a>0:
-            continue
+        # if T2 < time_step*1e-3 or T2 > 10e5:
+        #     continue
 
         T2_array = np.append(T2_array, T2)
         T2_err_array = np.append(T2_err_array, T2_err)
