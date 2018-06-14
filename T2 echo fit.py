@@ -6,13 +6,13 @@ from scipy.optimize import curve_fit
 def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
-directory = 'D:\Data\Fluxonium #23\T2CPMG'
-fname = '053118_T2CP_YOKO_1.188mA_Cav7.5613GHz_-20dBm_Qubit0.6343GHz_25dBm_PiPulse520ns_Count20_TimeStep8000_Avg_10000.h5'
+directory = 'D:\Data\Fluxonium #23\T2cpmg'
+fname = '061418_T2CP3_YOKO_91.259mA_Cav7.5612GHz_0dBm_Qubit0.63027GHz_25dBm_PiPulse476ns_Count25_TimeStep20000_Avg_10000.h5'
 path = directory + '\\' + fname
-pts_num =20
-time_step = 8000
+pts_num = 25
+time_step = 20000
 time = np.linspace(0, pts_num*time_step, pts_num)
-t2_guess = 10e-6
+t2_guess = 100e-6
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())
@@ -33,5 +33,7 @@ phase_fit = func(time_nice*1e-9, a, b, c, d)
 perr = np.sqrt(abs(np.diag(pcov)))
 plt.plot(time_nice*1e-3, phase_fit)
 plt.title(str(b*1e6)+ r'$\pm$' +str(perr[1]*1e6))
+plt.xlabel('us')
+plt.ylabel('phase(deg)')
 plt.tick_params(labelsize = 18.0)
 plt.show()

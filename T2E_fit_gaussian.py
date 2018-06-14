@@ -6,13 +6,13 @@ from scipy.optimize import curve_fit
 def func(x, a, b, c, d):
     return a*np.exp(-((x-c)/b)**2) + d
 
-directory = 'D:\Data\Fluxonium #13\T2E'
-fname = '091917_Rabi_YOKO_90.97mA_Cav7.3692GHz_-30dBm_Qubit0.8563GHz_20dBm_Count20_TimeStep50_Avg10000.h5'
+directory = 'D:\Data\Fluxonium #23\T2E'
+fname = '060818_T2E_YOKO_1.194mA_Cav7.56117GHz_-5dBm_Qubit0.634GHz_25dBm_PiPulse500ns_Count20_TimeStep10000_Avg_30000.h5'
 path = directory + '\\' + fname
-pts_num = 30
-time_step = 4000
+pts_num = 20
+time_step = 10000
 time = np.linspace(0, pts_num*time_step, pts_num)
-t2_guess = 10e-6
+t2_guess = 30e-6
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())

@@ -15,15 +15,15 @@ def func_g(x, a, b, c, d):
 
 #################################################################################################################
 #Parameters
-directory = 'D:\Data\Fluxonium #23\T2E'
-fname = 'T1T2ELoop_YOKO_91.264mA_Cav7.5613GHz_-25dBm_Qubit0.6303GHz_20dBm_PiPulse825ns_Count25_TimeStepT2E20000_TimeStepT120000.h5'
+directory = 'D:\Data\Fluxonium #28\T2E'
+fname = '.h5'
 path = directory + '\\' + fname
 pts_num = 25
 time_step_T1 = 20000
 time_step_T2E = 20000
 T1_guess = 50e-6
 T2_guess = 50e-6
-loop_num = 6
+loop_num = 25
 #################################################################################################################
 time_t2 = np.linspace(0, pts_num*time_step_T2E, pts_num)
 time_t1 = np.linspace(0, pts_num*time_step_T1, pts_num)
@@ -111,7 +111,7 @@ plt.figure(3, figsize=[5,5])
 plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b')
 plt.errorbar(loop_index, T2_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
 # plt.errorbar(loop_index, (T2_array**-1 - (2*T1_array)**-1)**-1 , yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
-# plt.yscale("log")
+plt.yscale("log")
 
 plt.tick_params(labelsize = 24)
 # plt.yticks([50,100,150,200])

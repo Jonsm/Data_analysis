@@ -8,7 +8,7 @@ def lorentzian (x,gamma,x0,h,offset):
 
 #File path
 directory = 'D:\Data\Fluxonium #23\One_tone'
-fname = '053018_One_tone_spec_0to0mA_7.55to7.57GHz_-25dBm'
+fname = '061118_One_tone_spec_90.643to90.643mA_7.558to7.564GHz_-10dBm'
 path = directory + '\\' + fname
 
 phase = np.genfromtxt(path+"_PHASEMAG.csv")[1:,0]
@@ -22,16 +22,16 @@ I = mag*np.cos(phase*np.pi/180)
 Q = mag*np.sin(phase*np.pi/180)
 
 # '''
-kappa = 0.02
-guess = ([kappa, freq[np.argmax(mag)], np.max(mag) - np.min(mag), 0])
-popt, pcov = scipy.optimize.curve_fit(lorentzian, freq, mag, p0=guess)
+# kappa = 0.02
+# guess = ([kappa, freq[np.argmax(mag)], np.max(mag) - np.min(mag), 0])
+# popt, pcov = scipy.optimize.curve_fit(lorentzian, freq, mag, p0=guess)
 # '''
 plt.figure(1)
 plt.plot(freq, phase)
 plt.figure(2)
 plt.plot(freq, mag)
-#plt.plot(freq, lorentzian(freq, *popt))
-#plt.title('\n'.join(wrap(fname)) + '\n' + str(popt[1]))
+# plt.plot(freq, lorentzian(freq, *popt))
+# plt.title('\n'.join(wrap(fname)) + '\n' + str(popt[1]))
 # plt.figure(3)
 # plt.plot(I,Q)
 

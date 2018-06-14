@@ -7,11 +7,11 @@ def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
 directory = 'D:\Data\Fluxonium #23\T1'
-fname = '053018_T1_YOKO_1.188mA_Cav7.5613GHz_-20dBm_Qubit0.6343GHz_25dBm_PiPulse514ns_Count25_TimeStep20000.h5'
+fname = '061318_T1_YOKO_91.2mA_Cav7.5612GHz_0dBm_Qubit2.684GHz_13dBm_PiPulse222ns_Count40_TimeStep4000.h5'
 path = directory + '\\' + fname
-pts_num = 25
-time_step = 20000
-t1_guess = 100e-6
+pts_num = 40
+time_step = 4000
+t1_guess = 50e-6
 time = np.linspace(0, (pts_num)*time_step, pts_num)
 
 #Read data and fit

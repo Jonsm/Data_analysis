@@ -4,12 +4,12 @@ import h5py
 from scipy.optimize import curve_fit
 
 directory = 'D:\Data\Fluxonium #23\T2R'
-fname = '053018_T2R_YOKO_1.188mA_Cav7.5613GHz_-20dBm_Qubit0.6342GHz_25dBm_PiPulse514ns_Count50_TimeStep600.h5'
+fname = '061418_T2R_YOKO_91.259mA_Cav7.5612GHz_0dBm_Qubit0.63027GHz_25dBm_PiHPulse251ns_Count20_TimeStep3000.h5'
 path = directory + '\\' + fname
-pts_num = 50
-time_step = 600
+pts_num = 20
+time_step = 3000
 time = np.linspace(0, pts_num*time_step, pts_num)
-t2_guess = 30e-6
+t2_guess = 10e-6
 freq_guess = 0.1e6
 #Read data and fit
 with h5py.File(path,'r') as hf:
@@ -42,8 +42,10 @@ T2_err = perr[1]*1e6 #us
 f_R = c/1e6 #MHz
 plt.plot(time_nice*1e-3, phase_fit, linewidth = 2.0)
 
-# plt.xlabel('Time(us)')
-# plt.ylabel('Phase')
+plt.xlabel('Time(us)')
+plt.ylabel('Phase')
 plt.title('T2 Ramsey=' + str(T2) + '+/-' + str(T2_err) + 'us, f_R=' + str(f_R) + 'MHz')
 plt.tick_params(labelsize = 18.0)
+plt.xlabel('microseconds',size=12.0)
+plt.ylabel('phase',size=12.0)
 plt.show()
