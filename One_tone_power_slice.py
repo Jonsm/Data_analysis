@@ -3,8 +3,8 @@ from matplotlib import pyplot as plt
 from matplotlib.widgets import Slider
 
 #File path
-directory = 'D:\Data\Fluxonium #11\One_tone_spec'
-measurement = 'One_tone_spec_0mA_7.35to7.37GHz_-20to-30dBm'
+directory = 'D:\Data\Julius II\One_tone'
+measurement = '090618_One_tone_spec_1.35mA_7.49to7.52GHz_-50to0dBm'
 path = directory + '\\' + measurement
 
 #Read data

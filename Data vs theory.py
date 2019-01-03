@@ -17,15 +17,16 @@ ax.get_yaxis().get_major_formatter().set_useOffset(False)
 ##############################################################################################################################
 ###################################################    Data    ###############################################################
 ##############################################################################################################################
-contrast_max = 1
-contrast_min = -2
+contrast_max = 1.5
+contrast_min = -1.5
 
 #File path
-directory = 'D:\Data\Fluxonium #28\Two_tone'
-measurement = '042218_Two_tone_spec_YOKO_2to0mA_Cav_7.3374GHz&-25dBm_QuBit2.5to5.8GHz&5dBm'
-path = directory + '\\' + measurement
+directory = 'D:\Data\Julius II\Two_tone'
 
-#Read data
+measurement = '100618_Two_tone_spec_YOKO_0to1.75mA_Cav_7.5064GHz&-5dBm_QuBit3to5.5GHz&-5dBm'
+path = directory + '\\' + measurement
+#
+# #Read data
 current = np.genfromtxt(path + '_CURRENT.csv')#*1e3  b
 current = current[1:-1]
 freq = np.genfromtxt(path + '_FREQ.csv')
@@ -40,15 +41,14 @@ for idx in range(len(current)):
     # temp = mag[idx*len(freq):(idx+1)*len(freq)]
     Z[idx,:] = temp - np.mean(temp)
 plt.figure(1)
-
+#
 X,Y = np.meshgrid(current,freq)
 plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = contrast_min, vmax = contrast_max)
 
-
-measurement = '042218_Two_tone_spec_YOKO_1.18to1.55mA_Cav_7.3374GHz&-25dBm_QuBit2to4GHz&15dBm'
+measurement = '100618_Two_tone_spec_YOKO_1.24to1.6mA_Cav_7.5064GHz&-10dBm_QuBit1.2to3GHz&0dBm'
 path = directory + '\\' + measurement
-
-#Read data
+#
+# #Read data
 current = np.genfromtxt(path + '_CURRENT.csv')#*1e3  b
 current = current[1:-1]
 freq = np.genfromtxt(path + '_FREQ.csv')
@@ -63,14 +63,14 @@ for idx in range(len(current)):
     # temp = mag[idx*len(freq):(idx+1)*len(freq)]
     Z[idx,:] = temp - np.mean(temp)
 plt.figure(1)
-
+#
 X,Y = np.meshgrid(current,freq)
 plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = contrast_min, vmax = contrast_max)
 
-measurement = '042318_Two_tone_spec_YOKO_2to2.5mA_Cav_7.3374GHz&-25dBm_QuBit5.3to5.7GHz&0dBm'
+measurement = '100618_Two_tone_spec_YOKO_1.504to1.7mA_Cav_7.5064GHz&-10dBm_QuBit0.3to1.2GHz&0dBm'
 path = directory + '\\' + measurement
-
-#Read data
+#
+# #Read data
 current = np.genfromtxt(path + '_CURRENT.csv')#*1e3  b
 current = current[1:-1]
 freq = np.genfromtxt(path + '_FREQ.csv')
@@ -85,76 +85,34 @@ for idx in range(len(current)):
     # temp = mag[idx*len(freq):(idx+1)*len(freq)]
     Z[idx,:] = temp - np.mean(temp)
 plt.figure(1)
-
-measurement = '042618_Two_tone_spec_YOKO_1.2to1.4mA_Cav_7.33756GHz&-10dBm_QuBit0.3to2GHz&25dBm'
-path = directory + '\\' + measurement
-
-#Read data
-current = np.genfromtxt(path + '_CURRENT.csv')#*1e3  b
-current = current[1:-1]
-freq = np.genfromtxt(path + '_FREQ.csv')
-freq = freq[1:]
-data = np.genfromtxt(path + '_PHASEMAG.csv')
-phase = data[1:,0] #phase is recorded in rad
-mag = data[1:,1]
-Z = np.zeros((len(current),len(freq)))
-for idx in range(len(current)):
-    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
-    temp = temp*180/(np.pi)
-    # temp = mag[idx*len(freq):(idx+1)*len(freq)]
-    Z[idx,:] = temp - np.mean(temp)
-plt.figure(1)
-
-X,Y = np.meshgrid(current,freq)
-plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = contrast_min, vmax = contrast_max)
-
-
-measurement = '042618_Two_tone_spec_YOKO_1.375to1.2mA_Cav_7.33756GHz&-25dBm_QuBit0.6to2GHz&25dBm'
-path = directory + '\\' + measurement
-
-#Read data
-current = np.genfromtxt(path + '_CURRENT.csv')#*1e3  b
-current = current[1:-1]
-freq = np.genfromtxt(path + '_FREQ.csv')
-freq = freq[1:]
-data = np.genfromtxt(path + '_PHASEMAG.csv')
-phase = data[1:,0] #phase is recorded in rad
-mag = data[1:,1]
-Z = np.zeros((len(current),len(freq)))
-for idx in range(len(current)):
-    temp = np.unwrap(phase[idx*len(freq):(idx+1)*len(freq)])
-    temp = temp*180/(np.pi)
-    # temp = mag[idx*len(freq):(idx+1)*len(freq)]
-    Z[idx,:] = temp - np.mean(temp)
-plt.figure(1)
-
+#
 X,Y = np.meshgrid(current,freq)
 plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = contrast_min, vmax = contrast_max)
 
 
 
 ##############################################################################################################################
-directory = 'D:\Data\Fluxonium #28\Summary'
+directory = 'D:\Data\Julius II\Summary'
 
-measurement = 'T1summary0mA 4018_25_04.txt'
+measurement = 'T1 summary 2018_10_08_0mA.txt'
 path = directory + '\\' + measurement
 data = np.genfromtxt(path)
 current = data[1:,0]
 freq = data[1:,1]
 T1 = data[1:,2]
-T1sp = data[1:,4]
-# T1_error = data[:,3]
+T1_error = data[:,3]
 plt.figure(1)
 plt.plot(current, freq, 'r.')
 plt.xlabel('I (mA)')
 plt.ylabel('freq (GHz)')
 plt.figure(2)
-plt.ylabel('t (uS)')
-plt.xlabel('freq (GHz)')
-plt.errorbar(freq, T1sp, yerr= data[1:,5], fmt='bs', label='50us Saturation Pulse')
-plt.errorbar(freq, T1, yerr= data[1:,3], fmt='r.', label='Pi Pulse')
-plt.legend()
+plt.ylabel('T1 (us)')
+plt.xlabel('Frequency 01 (GHz)')
 plt.yscale('log')
+plt.ylim([0,100])
+plt.errorbar(freq, T1, yerr= data[1:,3], fmt='rs', label='t1')
+plt.legend()
+
 
 # measurement = 'T1_summary_2018_04_13.txt'
 # path = directory + '\\' + measurement

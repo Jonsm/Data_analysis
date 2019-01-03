@@ -1,27 +1,27 @@
-import numpy as np
-from matplotlib import pyplot as plt
+from qutip import*
+from numpy import pi, sqrt
 
-directory = 'G:\Projects\Resonators\\2017-09-04-JJ-Xerxces'
-fucking_date = '2017-09-04-'
-fucking_meas = '-FluxSweepNegCurrentAfterWarmUp_MLOG_6.75 GHz_7.1 GHz_-40.00dBm_'
-fucking_number = np.linspace(38,183, (183-38) + 1)
-current = np.linspace(29.0, 0.0, 29.0/0.2 + 1.0)
-path = directory + '\\'+ fucking_date + '38' + fucking_meas  + '29.00000' + 'mA.dat'
-freq = np.genfromtxt(path, skip_header=13)[:,0]
-mag = np.zeros((len(freq), len(current)))
+q1 = (basis(2,0) + 2*basis(2,1)).unit()
+print (ket2dm(q1))
+q2 = basis(2,0)
+q3 = basis(2,0)
+phi0 = tensor(q1,q2,q3)
+#Create Bell stateand tensor product
+phi_bell = cnot(N=3, control=1, target=2)*tensor(q1,snot()*q2, q3)
 
-for idx in range(len(current)):
-    current_string = str(format(current[idx], '.5f'))
-    path = directory + '\\'+ fucking_date + str(int(fucking_number[idx])) + fucking_meas  + current_string + 'mA.dat'
-    fucking_data = np.genfromtxt(path, skip_header=13)
-    mag[:,idx] = fucking_data [:,1]
+#Bell measurement
+phi1 = cnot(N=3, control=0, target=1)*phi_bell
+phi2 = snot(N=3, target=0)*phi1
 
-X,Y = np.meshgrid(freq,current)
-Z = mag
+#Conditional gate
+phi3 = cnot(N=3, control=1, target=2)*phi2
+phi4 = (cphase(pi, N=3, control = 1, target = 2))*phi3
+projector = tensor(qeye(2),qeye(2),q1*q1.dag())
+measured = projector*phi4
+print (phi0.ptrace(0))
+print (phi4.ptrace(2))
+print (measured.ptrace(2))
 
-plt.pcolormesh(X,Y,Z.transpose(), vmin = -1, vmax = 0)
-plt.colorbar()
-plt.show()
 
 
 

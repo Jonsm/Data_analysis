@@ -10,17 +10,17 @@ warnings.simplefilter("error", RuntimeWarning)
 def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
-directory = 'D:\Data\Fluxonium #28\T2E'
-fname = '051418_T2ELoop_YOKO_62.118mA_Cav7.337GHz_-25dBm_Qubit0.33618GHz_25dBm_PiPulse571ns_Count25_TimeStep20000_loop_10.h5'
+directory = 'D:\Data\Fluxonium #23\T2E'
+fname = '061918_T2ELoop_YOKO_119.083mA_Cav7.5612GHz_0dBm_Qubit0.6276GHz_25dBm_PiPulse460ns_Count20_TimeStep18000_loop_20.h5'
 path = directory + '\\' + fname
 T2_array = []
 T2_err_array = []
-pts_num = 25
-time_step = 20000
-t2_guess = 100e-6
+pts_num = 20
+time_step = 18000
+t2_guess = 90e-6
 time = np.linspace(0, pts_num*time_step, pts_num)
 time_nice = np.linspace(0, pts_num*time_step, pts_num*100)
-loop_count = 11
+loop_count = 10
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())
@@ -65,6 +65,13 @@ with h5py.File(path,'r') as hf:
 
 count = np.linspace(0, len(T2_array), len(T2_array))
 plt.figure(2)
+plt.ylim([0,150])
 plt.errorbar(count, T2_array, yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
 plt.tick_params(labelsize = 18.0)
+
+T2_avg = np.average(T2_array)
+
+print('Mean T2e=' + str(T2_avg) + '+-' + str(np.average(T2_err_array)))
+
+
 plt.show()

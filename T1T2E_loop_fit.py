@@ -15,15 +15,15 @@ def func_g(x, a, b, c, d):
 
 #################################################################################################################
 #Parameters
-directory = 'D:\Data\Fluxonium #28\T2E'
-fname = '.h5'
+directory = 'D:\Data\Julius III\T2E'
+fname = 'T1T2ELoop_YOKO_41.291mA_Cav7.12GHz_-35dBm_Qubit0.6753GHz_8dBm_PiPulse160ns_Count20_TimeStepT2E8000_TimeStepT120000.h5'
 path = directory + '\\' + fname
-pts_num = 25
+pts_num = 20
 time_step_T1 = 20000
-time_step_T2E = 20000
+time_step_T2E = 8000
 T1_guess = 50e-6
-T2_guess = 50e-6
-loop_num = 25
+T2_guess = 20e-6
+loop_num = 51
 #################################################################################################################
 time_t2 = np.linspace(0, pts_num*time_step_T2E, pts_num)
 time_t1 = np.linspace(0, pts_num*time_step_T1, pts_num)
@@ -108,17 +108,18 @@ with h5py.File(path,'r') as hf:
 # print len(T1_array)
 # print len(T2_array)
 plt.figure(3, figsize=[5,5])
-plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', ecolor = 'b')
-plt.errorbar(loop_index, T2_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'g', ecolor = 'g')
+plt.errorbar(loop_index, T1_array, yerr=T1_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'b', label = 'T1', ecolor = 'b')
+plt.errorbar(loop_index, T2_array, yerr=T2_err_array, fmt = 's', mfc = 'none', mew = 2.0, mec = 'g', label = 'T2E', ecolor = 'g')
+plt.legend()
 # plt.errorbar(loop_index, (T2_array**-1 - (2*T1_array)**-1)**-1 , yerr=T2_err_array, fmt = 'h', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
-plt.yscale("log")
+print('Mean T1: ' + str(np.average(T1_array)) +'+-'+str(np.average(T1_err_array))+'  Mean T2E: '+str(np.average(T2_array))+'+-'+str(np.average(T2_err_array)))
 
 plt.tick_params(labelsize = 24)
 # plt.yticks([50,100,150,200])
-# plt.ylim([0,200])
+plt.ylim([0,150])
 # plt.xticks([0,25,50,75,100])
 #plt.errorbar(loop_index, Tp_array, fmt = 'd', mfc = 'none', mew = 2.0, mec = 'r', ecolor = 'r')
-# plt.xlabel('Index')
-# plt.ylabel(r'$\mu s$')
-# plt.grid()
+plt.xlabel('Attempt #')
+plt.ylabel(r'$\mu s$')
+plt.grid()
 plt.show()

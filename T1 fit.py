@@ -6,12 +6,12 @@ from scipy.optimize import curve_fit
 def func(x, a, b, c, d):
     return a*np.exp(-(x-c)/b) + d
 
-directory = 'D:\Data\Fluxonium #23\T1'
-fname = '061318_T1_YOKO_91.2mA_Cav7.5612GHz_0dBm_Qubit2.684GHz_13dBm_PiPulse222ns_Count40_TimeStep4000.h5'
+directory = 'D:\Data\Fluxonium waveguide 1\T1'
+fname = '121918_T1_YOKO_1.398mA_Cav7.0808GHz_-30dBm_Qubit1.059GHz_16dBm_PiPulse260ns_Count25_TimeStep15000.h5'
 path = directory + '\\' + fname
-pts_num = 40
-time_step = 4000
-t1_guess = 50e-6
+pts_num = 25
+time_step = 15000
+t1_guess = 100e-6
 time = np.linspace(0, (pts_num)*time_step, pts_num)
 
 #Read data and fit

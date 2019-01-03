@@ -2,11 +2,11 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-cmin = -2
-cmax = 2
+cmin = -1
+cmax = 3
 #File path
-directory = 'D:\Data\Fluxonium #28\Two_tone'
-measurement = '050818_Two_tone_power_YOKO_-30to5dBm_Cav_7.3367GHz&59.719mA_QuBit0.2to0.35GHz&25dBm'
+directory = 'D:\Data\Fluxonium waveguide 1\Two_tone'
+measurement = '122718_Two_tone_ACStark_DC_YOKO_0mA_Cav_7.081GHz&-30to20dBm_QuBit3.2to4GHz&-20dBm'
 path = directory + '\\' + measurement
 
 #Read data
@@ -28,13 +28,17 @@ for idx in range(len(power)):
 
 plt.figure(1)
 X,Y = np.meshgrid(power, freq)
-plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu')#, vmin = cmin, vmax = cmax)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = cmin, vmax = cmax)
 plt.ylim([freq[0],freq[-1]])
+plt.xlabel('Power (dbm)')
+plt.ylabel('Frequency (GHz')
 
-# plt.figure(2)
-# X,Y = np.meshgrid(np.power(10,power/10.0), freq)
-# plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = cmin, vmax = cmax)
+plt.figure(2)
+X,Y = np.meshgrid(np.power(10,power/10.0), freq)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = cmin, vmax = cmax)
 
-plt.ylim([freq[0],freq[-1]])
-plt.colorbar()
+# plt.ylim([freq[0],freq[-1]])
+
+
+
 plt.show()

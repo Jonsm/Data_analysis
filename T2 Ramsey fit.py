@@ -3,14 +3,14 @@ import numpy as np
 import h5py
 from scipy.optimize import curve_fit
 
-directory = 'D:\Data\Fluxonium #23\T2R'
-fname = '061418_T2R_YOKO_91.259mA_Cav7.5612GHz_0dBm_Qubit0.63027GHz_25dBm_PiHPulse251ns_Count20_TimeStep3000.h5'
+directory = 'D:\Data\Fluxonium waveguide 1\T2R'
+fname = '121618_T2R_YOKO_1.398mA_Cav7.0808GHz_-35dBm_Qubit1.0592GHz_16dBm_PiPulse260ns_Count30_TimeStep500.h5'
 path = directory + '\\' + fname
-pts_num = 20
-time_step = 3000
+pts_num = 30
+time_step = 500
 time = np.linspace(0, pts_num*time_step, pts_num)
 t2_guess = 10e-6
-freq_guess = 0.1e6
+freq_guess = .2e6
 #Read data and fit
 with h5py.File(path,'r') as hf:
     print('List of arrays in this file: \n', hf.keys())

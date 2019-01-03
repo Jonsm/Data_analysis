@@ -2,13 +2,13 @@ import numpy as np
 from matplotlib import pyplot as plt
 import time
 
-c = 1
-contrast_max = 0.5
-contrast_min = -.5
+c = .2
+contrast_max = 2
+contrast_min = -2
 # File path
-directory = 'D:\Data\Fluxonium #23\Two_tone'
+directory = 'D:\Data\Fluxonium waveguide 1\Two_tone'
 
-measurement = '061418_Two_tone_spec_YOKO_91.22to91.3mA_Cav_7.5612GHz&0dBm_QuBit2.66to2.68GHz&15dBm'
+measurement = '122618_Two_tone_spec_DC_YOKO_1.37to1.33mA_Cav_7.0808GHz&-30dBm_QuBit3.75to3.9GHz&0dBm'
 path = directory + '\\' + measurement
 #
 # #Read data
@@ -28,10 +28,7 @@ for idx in range(len(current)):
 plt.figure(1)
 #
 X,Y = np.meshgrid(current,freq)
-plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu_r', vmin = contrast_min, vmax = contrast_max)
+plt.pcolormesh(X,Y,Z.transpose(), cmap= 'GnBu', vmin = contrast_min, vmax = contrast_max)
 
-plt.colorbar()
-plt.tick_params(labelsize = 18.0)
 plt.show()
-
 
